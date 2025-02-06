@@ -27,8 +27,7 @@ int main()
 
 	int x = glewInit();
 
-	//if (glewInit() != GLEW_OK)
-	if(x == GLEW_OK)
+	if (glewInit() != GLEW_OK)
 	{
 		throw std::runtime_error("Failed to initialise glew");
 	}

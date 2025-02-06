@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\OpenGLSandbox1\\",
+  "WorkspaceRootPath": "D:\\OpenGLLabSandbox\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5D538128-1BB4-4473-A14C-17EEE5E642E3}|OpenGLSandbox.vcxproj|D:\\OpenGLSandbox1\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{5D538128-1BB4-4473-A14C-17EEE5E642E3}|OpenGLSandbox.vcxproj|D:\\OpenGLLabSandbox\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{5D538128-1BB4-4473-A14C-17EEE5E642E3}|OpenGLSandbox.vcxproj|solutionrelative:main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
@@ -20,11 +20,11 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "main.cpp",
-              "DocumentMoniker": "D:\\OpenGLSandbox1\\main.cpp",
+              "DocumentMoniker": "D:\\OpenGLLabSandbox\\main.cpp",
               "RelativeDocumentMoniker": "main.cpp",
-              "ToolTip": "D:\\OpenGLSandbox1\\main.cpp",
+              "ToolTip": "D:\\OpenGLLabSandbox\\main.cpp",
               "RelativeToolTip": "main.cpp",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAB4AAAARAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACIAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-02-06T11:54:48.126Z",
               "EditorCaption": ""
