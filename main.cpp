@@ -42,11 +42,25 @@ int main()
 	//triangle points - OpenGL vertices go counter clockwise
 	//This doesn't need to include z since it's 2D but it does here
 	const GLfloat positions[] = {
-	0.0f,0.5f,0.0f,
-	-1.0f,-0.5f,0.0f,
-	0.5f,-0.5f,0.0f
+	0.0f, 0.5f, 0.0f,
+	0.0f, -0.5f, 0.0f,
+	0.5f, -0.5f, 0.0f,
+	0.0f, 0.5f, 0.0f,
+	0.5f, 0.5f, 0.0f,
+	0.5, -0.5f, 0.0f
 	};
 
+
+	//define the colours for the points of the triangle
+	const GLfloat colors[] = {
+		1.0f, 1.0f, 0.0f, 1.0f,
+		0.0f, 1.0f, 0.0f, 1.0f,
+		0.0f, 0.0f, 1.0f, 1.0f,
+		1.0f, 1.0f, 0.0f, 1.0f,
+		0.0f, 1.0f, 0.0f, 1.0f,
+		0.0f, 0.0f, 1.0f, 1.0f,
+
+	};
 
 	
 	//handle to reference the VBO
@@ -70,6 +84,25 @@ int main()
 	//GL_STATIC_DRAW - static memory on the graphics card
 	//GL_ARRAY_BUFFER is given the positions so it copies the vertex data into the VBO
 	glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
+
+
+
+
+	GLuint colorsVboId = 0;
+
+	//Create a colours VBO on the GPU and bind it
+
+	glGenBuffers(1, &colorsVboId);
+
+	if (!colorsVboId)
+	{
+		throw std::runtime_error("Couldn't bind the colours VBO");
+	}
+
+	glBindBuffer(GL_ARRAY_BUFFER, colorsVboId);
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
+
 
 
 	// Reset the state
@@ -102,24 +135,49 @@ int main()
 
 
 	//Specify how the cooridinate data goes into attribute index 0 and has 3 floats per vertex
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,
-		3 * sizeof(GLfloat), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
 
 	//Enable attribute index 0 as being used
 	glEnableVertexAttribArray(0);
+
+
+	//Bind the color VBO and assign it to position 1 on the Bound VAO
+	glBindBuffer(GL_ARRAY_BUFFER, colorsVboId);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GL_FLOAT), (void*)0);
+	glEnableVertexAttribArray(1);
+
+
 
 	// Reset the state
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
+
+
+
+
+	//const GLchar* vertexShaderSrc =
+	//	"attribute vec3 in_Position;            " \
+	//	"                                       " \
+	//	"void main()                            " \
+	//	"{                                      " \
+	//	" gl_Position = vec4(in_Position, 1.0); " \
+	//	"}                                      ";
+
+
+	//v_Color needs to have the same name in each shader so that OpenGL knows how to link them
 	const GLchar* vertexShaderSrc =
-		"attribute vec3 in_Position;            " \
+		"attribute vec3 a_Position;            " \
+		"attribute vec4 a_Color;               " \
+		"                                       " \
+		"varying vec4 v_Color;                 " \
 		"                                       " \
 		"void main()                            " \
 		"{                                      " \
-		" gl_Position = vec4(in_Position, 1.0); " \
-		"}                                      ";
-
+		" gl_Position = vec4(a_Position, 1.0); " \
+		" v_Color = a_Color;                  " \
+		"}                                      " \
+		"                                       ";
 
 
 	// Create a new vertex shader, attach source code, compile it and
@@ -136,7 +194,7 @@ int main()
 	}
 
 
-
+	/*
 
 	const GLchar* fragmentShaderSrc =
 		"void main()                       " \
@@ -144,6 +202,30 @@ int main()
 		" gl_FragColor = vec4(0, 0, 1, 1); " \
 		"}                                 ";
 
+	*/
+
+	//Uniforms stay constant during the drawing of the entire shape
+
+	//Uniforms act as variables within shaders that can be changed via code
+	//u_Color can be changed instead of hard coding a colour value
+	//const GLchar* fragmentShaderSrc =
+	//	"uniform vec4 u_Color;    " \
+	//	"                          " \
+	//	"void main()               " \
+	//	"{                         " \
+	//	" gl_FragColor = u_Color; " \
+	//	"}                         " \
+	//	"                          ";
+		
+	
+	const GLchar* fragmentShaderSrc =
+		"varying vec4 v_Color;    " \
+		"                          " \
+		"void main()               " \
+		"{                         " \
+		" gl_FragColor = v_Color; " \
+		"}                         " \
+		"                          ";
 
 	// Create a new fragment shader, attach source code, compile it and
 	// check for errors.
@@ -165,7 +247,10 @@ int main()
 
 	// Ensure the VAO "position" attribute stream gets set as the first position
 	// during the link.
-	glBindAttribLocation(programId, 0, "in_Position");
+	glBindAttribLocation(programId, 0, "a_Position");
+
+	//a_color attribute stream gets set as the second position during the link
+	glBindAttribLocation(programId, 1, "a_Color");
 
 	// Perform the link and check for failure
 	glLinkProgram(programId);
@@ -175,6 +260,15 @@ int main()
 	{
 		throw std::exception();
 	}
+
+	////Store location of color uniform and check if successfully found
+	////GLint is used for indexes and returns -1 as an error code
+	//GLint colorUniformId = glGetUniformLocation(programId, "u_Color");
+	//if (colorUniformId == -1)
+	//{
+	//	throw std::runtime_error("Location of uniform shader couldn't be found");
+	//}
+
 
 	// Detach and destroy the shader objects. These are no longer needed
 	// because we now have a complete shader program.
@@ -205,15 +299,19 @@ int main()
 			glUseProgram(programId);
 			glBindVertexArray(vaoId);
 
+			//
+			//glUniform4f(colorUniformId, 0, 1, 0, 1);
+
+
 			//Draw the vertices of the triangle
-			glDrawArrays(GL_TRIANGLES, 0, 3);
+			glDrawArrays(GL_TRIANGLES, 0, 6);
+			
 
 			//Reset the state
 			glBindVertexArray(0);
 			glUseProgram(0);
 
 			//Do drawing
-
 			SDL_GL_SwapWindow(window);
 		}
 	}
