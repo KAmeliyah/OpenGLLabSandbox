@@ -301,6 +301,13 @@ int main()
 
 	while (!quit)
 	{
+
+		int width = 0;
+		int height = 0;
+
+		SDL_GetWindowSize(window, &width, &height);
+		glViewport(0, 0, width, height);
+
 		SDL_Event e = { 0 };
 
 		while (SDL_PollEvent(&e))
@@ -325,7 +332,7 @@ int main()
 		//glUniform4f(colorUniformId, 0, 1, 0, 1);
 
 		//Prepare the perspective projection matrix
-		glm::mat4 projection = glm::perspective(glm::radians(45.0f), float(WINDOW_WIDTH) / float(WINDOW_HEIGHT), 0.1f, 100.0f);
+		glm::mat4 projection = glm::perspective(glm::radians(45.0f), float(width) / float(height), 0.1f, 100.0f);
 
 		//Prep the model matrix
 		glm::mat4 model(1.0f);
@@ -341,6 +348,27 @@ int main()
 		//Upload the projection matrix
 		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
+		//Draw the vertices of the triangle
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+
+
+
+
+		//orthographic projection
+		projection = glm::ortho(0.0f, (float)WINDOW_WIDTH, 0.0f,(float)WINDOW_HEIGHT, 0.0f, 1.0f);
+
+		// Prepare model matrix. The scale is important because now our triangle
+		// would be the size of a single pixel when mapped to an orthographic
+		// projection.
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(100, WINDOW_HEIGHT - 100, 0));
+		model = glm::scale(model, glm::vec3(100, 100, 1));
+
+			// Upload the model matrix
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+			// Upload the projection matrix
+		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE,glm::value_ptr(projection));
 
 		//Draw the vertices of the triangle
 		glDrawArrays(GL_TRIANGLES, 0, 6);
