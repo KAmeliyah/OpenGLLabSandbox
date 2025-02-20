@@ -1,6 +1,8 @@
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
 #include <iostream>
+#include <glm/ext.hpp>
+#include <glm/glm.hpp>
 
 
 #define WINDOW_WIDTH 800
@@ -33,7 +35,7 @@ int main()
 		throw std::runtime_error("Failed to initialise glew");
 	}
 
-	
+	float angle = 0;
 
 	//Prepare VBO
 
@@ -43,11 +45,11 @@ int main()
 	//This doesn't need to include z since it's 2D but it does here
 	const GLfloat positions[] = {
 	0.0f, 0.5f, 0.0f,
-	0.0f, -0.5f, 0.0f,
+	-0.5f, -0.5f, 0.0f,
 	0.5f, -0.5f, 0.0f,
-	0.0f, 0.5f, 0.0f,
-	0.5f, 0.5f, 0.0f,
-	0.5, -0.5f, 0.0f
+	//0.0f, 0.5f, 0.0f,
+	//0.5f, 0.5f, 0.0f,
+	//0.5, -0.5f, 0.0f
 	};
 
 
@@ -56,9 +58,9 @@ int main()
 		1.0f, 1.0f, 0.0f, 1.0f,
 		0.0f, 1.0f, 0.0f, 1.0f,
 		0.0f, 0.0f, 1.0f, 1.0f,
-		1.0f, 1.0f, 0.0f, 1.0f,
+		/*1.0f, 1.0f, 0.0f, 1.0f,
 		0.0f, 1.0f, 0.0f, 1.0f,
-		0.0f, 0.0f, 1.0f, 1.0f,
+		0.0f, 0.0f, 1.0f, 1.0f,*/
 
 	};
 
@@ -167,14 +169,16 @@ int main()
 
 	//v_Color needs to have the same name in each shader so that OpenGL knows how to link them
 	const GLchar* vertexShaderSrc =
-		"attribute vec3 a_Position;            " \
+		"attribute vec3 a_Position;			   " \
 		"attribute vec4 a_Color;               " \
 		"                                       " \
 		"varying vec4 v_Color;                 " \
+		"uniform mat4 u_Projection;				"\
+		"uniform mat4 u_Model;					"\
 		"                                       " \
 		"void main()                            " \
 		"{                                      " \
-		" gl_Position = vec4(a_Position, 1.0); " \
+		" gl_Position = u_Projection * u_Model * vec4(a_Position,1.0); " \
 		" v_Color = a_Color;                  " \
 		"}                                      " \
 		"                                       ";
@@ -261,6 +265,8 @@ int main()
 		throw std::exception();
 	}
 
+	
+
 	////Store location of color uniform and check if successfully found
 	////GLint is used for indexes and returns -1 as an error code
 	//GLint colorUniformId = glGetUniformLocation(programId, "u_Color");
@@ -277,6 +283,19 @@ int main()
 	glDetachShader(programId, fragmentShaderId);
 	glDeleteShader(fragmentShaderId);
 
+	//Get location of uniform so that OpenGL knows where to upload data to
+	GLint modelLoc = glGetUniformLocation(programId, "u_Model");
+	if (modelLoc == -1)
+	{
+		throw std::runtime_error("Location of model matrix couldn't be found");
+	}
+
+	GLint projectionLoc = glGetUniformLocation(programId, "u_Projection");
+	if (projectionLoc == -1)
+	{
+		throw std::runtime_error("Location of projection matrix couldn't be found");
+	}
+
 
 	bool quit = false;
 
@@ -291,29 +310,48 @@ int main()
 				quit = true;
 			}
 
-			glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT);
-
-
-			//Instruct OpenGL to use our shader program and our VAO
-			glUseProgram(programId);
-			glBindVertexArray(vaoId);
-
-			//
-			//glUniform4f(colorUniformId, 0, 1, 0, 1);
-
-
-			//Draw the vertices of the triangle
-			glDrawArrays(GL_TRIANGLES, 0, 6);
 			
-
-			//Reset the state
-			glBindVertexArray(0);
-			glUseProgram(0);
-
-			//Do drawing
-			SDL_GL_SwapWindow(window);
 		}
+
+		glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+
+		//Instruct OpenGL to use our shader program and our VAO
+		glUseProgram(programId);
+		glBindVertexArray(vaoId);
+
+		//
+		//glUniform4f(colorUniformId, 0, 1, 0, 1);
+
+		//Prepare the perspective projection matrix
+		glm::mat4 projection = glm::perspective(glm::radians(45.0f), float(WINDOW_WIDTH) / float(WINDOW_HEIGHT), 0.1f, 100.0f);
+
+		//Prep the model matrix
+		glm::mat4 model(1.0f);
+		model = glm::translate(model, glm::vec3(0, 0, -2.5));
+		model = glm::rotate(model, glm::radians(angle), glm::vec3(0, 1, 0));
+
+		//Increase the angle for further rotation
+		angle += 1.0f;
+
+		//Upload the model matrix
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+		//Upload the projection matrix
+		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+
+
+		//Draw the vertices of the triangle
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+
+
+		//Reset the state
+		glBindVertexArray(0);
+		glUseProgram(0);
+
+		//Do drawing
+		SDL_GL_SwapWindow(window);
 	}
 
 	return 0;
