@@ -405,10 +405,12 @@ int main()
 		//Upload the projection matrix
 		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
+		glEnable(GL_CULL_FACE);
+
 		//Draw the vertices of the triangle
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
-
+		glDisable(GL_CULL_FACE);
 
 
 		//orthographic projection
