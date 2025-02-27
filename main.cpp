@@ -4,6 +4,8 @@
 #include <glm/ext.hpp>
 #include <glm/glm.hpp>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
@@ -25,6 +27,17 @@ int main()
 		throw std::runtime_error("No context");
 	}
 
+	int w = 0;
+	int h = 0;
+
+	unsigned char* data = stbi_load("batman.png", &w, &h, NULL, 4);
+
+	if (!data)
+	{
+		throw std::exception();
+	}
+
+
 	//can't init glew without connection to graphics card
 	//Glew loads OpenGL and extensions at runtime
 
@@ -44,12 +57,12 @@ int main()
 	//triangle points - OpenGL vertices go counter clockwise
 	//This doesn't need to include z since it's 2D but it does here
 	const GLfloat positions[] = {
-	0.0f, 0.5f, 0.0f,
-	-0.5f, -0.5f, 0.0f,
-	0.5f, -0.5f, 0.0f,
-	//0.0f, 0.5f, 0.0f,
-	//0.5f, 0.5f, 0.0f,
-	//0.5, -0.5f, 0.0f
+		0.0f, 0.5f, 0.0f,
+		-0.5f, 0.5f, 0.0f,
+		-0.5f, 0.0f, 0.0f,
+		-0.5f, 0.0f, 0.0f,
+		0.0f, 0.0f, 0.0f,
+		0.0f, 0.5f, 0.0f
 	};
 
 
@@ -62,6 +75,15 @@ int main()
 		0.0f, 1.0f, 0.0f, 1.0f,
 		0.0f, 0.0f, 1.0f, 1.0f,*/
 
+	};
+
+	const GLfloat texCoords[] = {
+		1.0f,0.0f,
+		0.0f,0.0f,
+		0.0f,1.0f,
+		0.0f,1.0f,
+		1.0f,1.0f,
+		1.0f,0.0f,
 	};
 
 	
@@ -103,7 +125,7 @@ int main()
 
 	glBindBuffer(GL_ARRAY_BUFFER, colorsVboId);
 
-	glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(texCoords), texCoords, GL_STATIC_DRAW);
 
 
 
@@ -111,6 +133,12 @@ int main()
 	//Clear GL_ARRAY_BUFFER since it doesn't need the positions data anymore
 	//since positionsVboId has it now
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+
+	
+
+
+
 
 
 	//Prepare VAO
@@ -145,9 +173,8 @@ int main()
 
 	//Bind the color VBO and assign it to position 1 on the Bound VAO
 	glBindBuffer(GL_ARRAY_BUFFER, colorsVboId);
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GL_FLOAT), (void*)0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GL_FLOAT), (void*)0);
 	glEnableVertexAttribArray(1);
-
 
 
 	// Reset the state
@@ -155,7 +182,30 @@ int main()
 	glBindVertexArray(0);
 
 
+	//Create and bind a texture
+	GLuint textureId = 0;
+	glGenTextures(1, &textureId);
 
+	if (!textureId)
+	{
+		throw std::runtime_error("Couldn't create the texture");
+	}
+
+	glBindTexture(GL_TEXTURE_2D, textureId);
+
+	//upload the image data to the bound texture unit in the GPU
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+
+	//Free the loaded data because there's a copy on the gpu
+
+	free(data);
+
+	//Generate mipmap so the texture is mapped correctly
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	//Unbind the texture because operations on it are done
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 
 	//const GLchar* vertexShaderSrc =
@@ -170,16 +220,16 @@ int main()
 	//v_Color needs to have the same name in each shader so that OpenGL knows how to link them
 	const GLchar* vertexShaderSrc =
 		"attribute vec3 a_Position;			   " \
-		"attribute vec4 a_Color;               " \
+		"attribute vec2 a_TexCoord;               " \
 		"                                       " \
-		"varying vec4 v_Color;                 " \
+		"varying vec2 v_TexCoord;                 " \
 		"uniform mat4 u_Projection;				"\
 		"uniform mat4 u_Model;					"\
 		"                                       " \
 		"void main()                            " \
 		"{                                      " \
 		" gl_Position = u_Projection * u_Model * vec4(a_Position,1.0); " \
-		" v_Color = a_Color;                  " \
+		" v_TexCoord = a_TexCoord;                 " \
 		"}                                      " \
 		"                                       ";
 
@@ -223,11 +273,13 @@ int main()
 		
 	
 	const GLchar* fragmentShaderSrc =
-		"varying vec4 v_Color;    " \
+		"uniform sampler2D u_Texture; "\
+		"varying vec2 v_TexCoord;    " \
 		"                          " \
 		"void main()               " \
 		"{                         " \
-		" gl_FragColor = v_Color; " \
+		"	vec4 tex = texture2D(u_Texture, v_TexCoord);"\
+		"	gl_FragColor = tex;		 " \
 		"}                         " \
 		"                          ";
 
@@ -253,8 +305,10 @@ int main()
 	// during the link.
 	glBindAttribLocation(programId, 0, "a_Position");
 
-	//a_color attribute stream gets set as the second position during the link
-	glBindAttribLocation(programId, 1, "a_Color");
+	////a_color attribute stream gets set as the second position during the link
+	//glBindAttribLocation(programId, 1, "a_Color");
+
+	glBindAttribLocation(programId, 1, "a_TexCoord");
 
 	// Perform the link and check for failure
 	glLinkProgram(programId);
@@ -328,6 +382,9 @@ int main()
 		glUseProgram(programId);
 		glBindVertexArray(vaoId);
 
+
+		glBindTexture(GL_TEXTURE_2D, textureId);
+
 		//
 		//glUniform4f(colorUniformId, 0, 1, 0, 1);
 
@@ -376,7 +433,9 @@ int main()
 
 		//Reset the state
 		glBindVertexArray(0);
+		glBindTexture(GL_TEXTURE_2D,0);
 		glUseProgram(0);
+
 
 		//Do drawing
 		SDL_GL_SwapWindow(window);
