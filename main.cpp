@@ -3,6 +3,7 @@
 #include <iostream>
 #include <glm/ext.hpp>
 #include <glm/glm.hpp>
+#include "Texture.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -27,15 +28,18 @@ int main()
 		throw std::runtime_error("No context");
 	}
 
-	int w = 0;
-	int h = 0;
 
-	unsigned char* data = stbi_load("batman.png", &w, &h, NULL, 4);
+	/*Texture bat("batman.png");*/
 
-	if (!data)
-	{
-		throw std::exception();
-	}
+	//int w = 0;
+	//int h = 0;
+
+	//unsigned char* data = stbi_load("batman.png", &w, &h, NULL, 4);
+
+	//if (!data)
+	//{
+	//	throw std::exception();
+	//}
 
 
 	//can't init glew without connection to graphics card
@@ -182,7 +186,18 @@ int main()
 	glBindVertexArray(0);
 
 
-	//Create and bind a texture
+	//GLuint textureId = bat.id();
+
+
+	/*if (!textureId)
+	{
+		throw std::runtime_error("Couldn't create the texture");
+	}*/
+
+
+
+
+	/*Create and bind a texture
 	GLuint textureId = 0;
 	glGenTextures(1, &textureId);
 
@@ -193,19 +208,19 @@ int main()
 
 	glBindTexture(GL_TEXTURE_2D, textureId);
 
-	//upload the image data to the bound texture unit in the GPU
+	upload the image data to the bound texture unit in the GPU
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
-	//Free the loaded data because there's a copy on the gpu
+	Free the loaded data because there's a copy on the gpu
 
 	free(data);
 
-	//Generate mipmap so the texture is mapped correctly
+	Generate mipmap so the texture is mapped correctly
 	glGenerateMipmap(GL_TEXTURE_2D);
 
-	//Unbind the texture because operations on it are done
-	glBindTexture(GL_TEXTURE_2D, 0);
+	Unbind the texture because operations on it are done
+	glBindTexture(GL_TEXTURE_2D, 0);*/
 
 
 	//const GLchar* vertexShaderSrc =
