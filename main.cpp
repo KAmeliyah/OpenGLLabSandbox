@@ -4,7 +4,11 @@
 #include <glm/ext.hpp>
 #include <glm/glm.hpp>
 #include "Texture.h"
+#include "Model.h"
 
+
+
+//only define in main but use stb image header where needed
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
@@ -15,6 +19,10 @@
 
 int main()
 {
+	Texture bat("curuthers/Whiskers_diffuse.png");
+	
+	Model cat("curuthers/curuthers.obj");
+
 
 	SDL_Window* window = SDL_CreateWindow("Triangle",
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
@@ -29,7 +37,7 @@ int main()
 	}
 
 
-	/*Texture bat("batman.png");*/
+	
 
 	//int w = 0;
 	//int h = 0;
@@ -51,6 +59,8 @@ int main()
 	{
 		throw std::runtime_error("Failed to initialise glew");
 	}
+
+
 
 	float angle = 0;
 
@@ -186,41 +196,7 @@ int main()
 	glBindVertexArray(0);
 
 
-	//GLuint textureId = bat.id();
-
-
-	/*if (!textureId)
-	{
-		throw std::runtime_error("Couldn't create the texture");
-	}*/
-
-
-
-
-	/*Create and bind a texture
-	GLuint textureId = 0;
-	glGenTextures(1, &textureId);
-
-	if (!textureId)
-	{
-		throw std::runtime_error("Couldn't create the texture");
-	}
-
-	glBindTexture(GL_TEXTURE_2D, textureId);
-
-	upload the image data to the bound texture unit in the GPU
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-
-	Free the loaded data because there's a copy on the gpu
-
-	free(data);
-
-	Generate mipmap so the texture is mapped correctly
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	Unbind the texture because operations on it are done
-	glBindTexture(GL_TEXTURE_2D, 0);*/
+	
 
 
 	//const GLchar* vertexShaderSrc =
@@ -230,9 +206,9 @@ int main()
 	//	"{                                      " \
 	//	" gl_Position = vec4(in_Position, 1.0); " \
 	//	"}                                      ";
-
-
+ 
 	//v_Color needs to have the same name in each shader so that OpenGL knows how to link them
+
 	const GLchar* vertexShaderSrc =
 		"attribute vec3 a_Position;			   " \
 		"attribute vec2 a_TexCoord;               " \
@@ -390,17 +366,17 @@ int main()
 		}
 
 		glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
 		//Instruct OpenGL to use our shader program and our VAO
 		glUseProgram(programId);
-		glBindVertexArray(vaoId);
-
-
-		glBindTexture(GL_TEXTURE_2D, textureId);
-
-		//
+		//glBindVertexArray(vaoId);
+		//glBindTexture(GL_TEXTURE_2D, bat.id());
+		
+		glBindVertexArray(cat.vao_id());
+		glBindTexture(GL_TEXTURE_2D, bat.id());
+		
 		//glUniform4f(colorUniformId, 0, 1, 0, 1);
 
 		//Prepare the perspective projection matrix
@@ -408,11 +384,11 @@ int main()
 
 		//Prep the model matrix
 		glm::mat4 model(1.0f);
-		model = glm::translate(model, glm::vec3(0, 0, -2.5));
-		model = glm::rotate(model, glm::radians(angle), glm::vec3(0, 1, 0));
+		model = glm::translate(model, glm::vec3(0, 0, -20));
+		//model = glm::rotate(model, glm::radians(angle), glm::vec3(0, 1, 0));
 
 		//Increase the angle for further rotation
-		angle += 1.0f;
+		//angle += 1.0f;
 
 		//Upload the model matrix
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
@@ -421,36 +397,41 @@ int main()
 		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
 		glEnable(GL_CULL_FACE);
+		glEnable(GL_DEPTH_TEST);
 
 		//Draw the vertices of the triangle
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+		//glDrawArrays(GL_TRIANGLES, 0, 6);
+
+
+		glDrawArrays(GL_TRIANGLES, 0, cat.vertex_count());
 
 		glDisable(GL_CULL_FACE);
+		glDisable(GL_DEPTH_TEST);
 
 
 		//orthographic projection
-		projection = glm::ortho(0.0f, (float)WINDOW_WIDTH, 0.0f,(float)WINDOW_HEIGHT, 0.0f, 1.0f);
+		//projection = glm::ortho(0.0f, (float)WINDOW_WIDTH, 0.0f,(float)WINDOW_HEIGHT, 0.0f, 1.0f);
 
 		// Prepare model matrix. The scale is important because now our triangle
 		// would be the size of a single pixel when mapped to an orthographic
 		// projection.
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(100, WINDOW_HEIGHT - 100, 0));
-		model = glm::scale(model, glm::vec3(100, 100, 1));
+		//model = glm::mat4(1.0f);
+		//model = glm::translate(model, glm::vec3(100, WINDOW_HEIGHT - 100, 0));
+		//model = glm::scale(model, glm::vec3(100, 100, 1));
 
 			// Upload the model matrix
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
 			// Upload the projection matrix
-		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE,glm::value_ptr(projection));
+		//glUniformMatrix4fv(projectionLoc, 1, GL_FALSE,glm::value_ptr(projection));
 
 		//Draw the vertices of the triangle
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+		//glDrawArrays(GL_TRIANGLES, 0, 6);
 
 
 		//Reset the state
 		glBindVertexArray(0);
-		glBindTexture(GL_TEXTURE_2D,0);
+		//glBindTexture(GL_TEXTURE_2D,0);
 		glUseProgram(0);
 
 

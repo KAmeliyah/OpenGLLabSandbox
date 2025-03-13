@@ -2,18 +2,15 @@
 
 Texture::Texture(const std::string& _path)
 {
-	int w = 0;
-	int h = 0;
-
 	//why use a car when a bicycle does the trick
-	unsigned char* data = stbi_load(_path.c_str(), &w, &h, NULL, 4);
+	unsigned char* data = stbi_load(_path.c_str(), &m_size.x, &m_size.y, NULL, 4);
 	if (!data)
 	{
 		throw std::runtime_error("Couldn't load the image");
 	}
 
 	//copy raw data into a safe store vector
-	for (int i = 0; i < w * h * 4; i++)
+	for (int i = 0; i < m_size.x * m_size.y * 4; i++)
 	{
 		m_data.push_back(data[i]);
 	}
@@ -66,14 +63,14 @@ void Texture::load(const std::string& _path)
 	int h = 0;
 
 	//why use a car when a bicycle does the trick
-	unsigned char* data = stbi_load(_path.c_str(), &w, &h, NULL, 4);
+	unsigned char* data = stbi_load(_path.c_str(), &m_size.x, &m_size.y, NULL, 4);
 	if (!data)
 	{
 		throw std::runtime_error("Couldn't load the image");
 	}
 
 	//copy raw data into a safe store vector
-	for (int i = 0; i < w * h * 4; i++)
+	for (int i = 0; i < m_size.x * m_size.y * 4; i++)
 	{
 		m_data.push_back(data[i]);
 	}
