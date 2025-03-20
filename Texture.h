@@ -28,9 +28,9 @@ struct Texture
 	GLuint id();
 
 private:
-	bool m_dirty;
-	std::vector<unsigned char> m_data;
-	glm::ivec2 m_size;
-	GLuint m_id;
+	bool m_Dirty;
+	std::vector<unsigned char> m_Data;
+	glm::ivec2 m_Size;
+	GLuint m_Id;
 
 };

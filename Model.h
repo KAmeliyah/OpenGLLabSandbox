@@ -50,7 +50,7 @@ private:
 
 };
 
-#include <stdexcept>
+
 
 inline Model::Model()
   : m_vboid(0)
