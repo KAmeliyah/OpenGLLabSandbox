@@ -16,8 +16,15 @@ struct ShaderProgram
 	
 	void LoadProgram(const std::string _vertPath,const std::string _fragPath);
 
-	void SetUniform(std::string _uniform, glm::vec4 _value);
+	//Matrix upload
+	void SetUniform(std::string _uniform, glm::mat4 _value);
 
+	//Vec4 upload
+	void SetUniform(std::string _uniform, glm::vec4 _value);
+	
+	//Vec3 upload
+	void SetUniform(std::string _uniform, glm::vec3 _value);
+	
 	void SetUniform(std::string _uniform, float _value);
 
 	void SetUniform(std::string _uniform, Texture* _texture);

@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include "Texture.h"
 #include "Model.h"
+#include "ShaderProgram.h"
 
 
 
@@ -195,151 +196,109 @@ int main()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
-
+	ShaderProgram program("VertexShader.v", "FragmentShader.f");
 	
 
+	//v_Color needs to have the same name in each shader so that OpenGL knows how to link them
 
 	//const GLchar* vertexShaderSrc =
-	//	"attribute vec3 in_Position;            " \
+	//	"attribute vec3 a_Position;			   " \
+	//	"attribute vec2 a_TexCoord;               " \
+	//	"                                       " \
+	//	"varying vec2 v_TexCoord;                 " \
+	//	"uniform mat4 u_Projection;				"\
+	//	"uniform mat4 u_Model;					"\
 	//	"                                       " \
 	//	"void main()                            " \
 	//	"{                                      " \
-	//	" gl_Position = vec4(in_Position, 1.0); " \
-	//	"}                                      ";
- 
-	//v_Color needs to have the same name in each shader so that OpenGL knows how to link them
-
-	const GLchar* vertexShaderSrc =
-		"attribute vec3 a_Position;			   " \
-		"attribute vec2 a_TexCoord;               " \
-		"                                       " \
-		"varying vec2 v_TexCoord;                 " \
-		"uniform mat4 u_Projection;				"\
-		"uniform mat4 u_Model;					"\
-		"                                       " \
-		"void main()                            " \
-		"{                                      " \
-		" gl_Position = u_Projection * u_Model * vec4(a_Position,1.0); " \
-		" v_TexCoord = a_TexCoord;                 " \
-		"}                                      " \
-		"                                       ";
+	//	" gl_Position = u_Projection * u_Model * vec4(a_Position,1.0); " \
+	//	" v_TexCoord = a_TexCoord;                 " \
+	//	"}                                      " \
+	//	"                                       ";
 
 
-	// Create a new vertex shader, attach source code, compile it and
-	// check for errors.
-	GLuint vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShaderId, 1, &vertexShaderSrc, NULL);
-	glCompileShader(vertexShaderId);
-	GLint success = 0;
-	glGetShaderiv(vertexShaderId, GL_COMPILE_STATUS, &success);
+	//// Create a new vertex shader, attach source code, compile it and
+	//// check for errors.
+	//GLuint vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
+	//glShaderSource(vertexShaderId, 1, &vertexShaderSrc, NULL);
+	//glCompileShader(vertexShaderId);
+	//GLint success = 0;
+	//glGetShaderiv(vertexShaderId, GL_COMPILE_STATUS, &success);
 
-	if (!success)
-	{
-		throw std::runtime_error("Error while making the vertex shader");
-	}
+	//if (!success)
+	//{
+	//	throw std::runtime_error("Error while making the vertex shader");
+	//}
 
-
-	/*
-
-	const GLchar* fragmentShaderSrc =
-		"void main()                       " \
-		"{                                 " \
-		" gl_FragColor = vec4(0, 0, 1, 1); " \
-		"}                                 ";
-
-	*/
-
-	//Uniforms stay constant during the drawing of the entire shape
-
-	//Uniforms act as variables within shaders that can be changed via code
-	//u_Color can be changed instead of hard coding a colour value
+	//
 	//const GLchar* fragmentShaderSrc =
-	//	"uniform vec4 u_Color;    " \
+	//	"uniform sampler2D u_Texture; "\
+	//	"varying vec2 v_TexCoord;    " \
 	//	"                          " \
 	//	"void main()               " \
 	//	"{                         " \
-	//	" gl_FragColor = u_Color; " \
+	//	"	vec4 tex = texture2D(u_Texture, v_TexCoord);"\
+	//	"	gl_FragColor = tex;		 " \
 	//	"}                         " \
 	//	"                          ";
-		
-	
-	const GLchar* fragmentShaderSrc =
-		"uniform sampler2D u_Texture; "\
-		"varying vec2 v_TexCoord;    " \
-		"                          " \
-		"void main()               " \
-		"{                         " \
-		"	vec4 tex = texture2D(u_Texture, v_TexCoord);"\
-		"	gl_FragColor = tex;		 " \
-		"}                         " \
-		"                          ";
 
-	// Create a new fragment shader, attach source code, compile it and
-	// check for errors.
-	GLuint fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShaderId, 1, &fragmentShaderSrc, NULL);
-	glCompileShader(fragmentShaderId);
-	glGetShaderiv(fragmentShaderId, GL_COMPILE_STATUS, &success);
+	//// Create a new fragment shader, attach source code, compile it and
+	//// check for errors.
+	//GLuint fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
+	//glShaderSource(fragmentShaderId, 1, &fragmentShaderSrc, NULL);
+	//glCompileShader(fragmentShaderId);
+	//glGetShaderiv(fragmentShaderId, GL_COMPILE_STATUS, &success);
 
-	if (!success)
-	{
-		throw std::exception();
-	}
-
-
-	// Create new shader program and attach our shader objects
-	GLuint programId = glCreateProgram();
-	glAttachShader(programId, vertexShaderId);
-	glAttachShader(programId, fragmentShaderId);
-
-	// Ensure the VAO "position" attribute stream gets set as the first position
-	// during the link.
-	glBindAttribLocation(programId, 0, "a_Position");
-
-	////a_color attribute stream gets set as the second position during the link
-	//glBindAttribLocation(programId, 1, "a_Color");
-
-	glBindAttribLocation(programId, 1, "a_TexCoord");
-
-	// Perform the link and check for failure
-	glLinkProgram(programId);
-	glGetProgramiv(programId, GL_LINK_STATUS, &success);
-
-	if (!success)
-	{
-		throw std::exception();
-	}
-
-	
-
-	////Store location of color uniform and check if successfully found
-	////GLint is used for indexes and returns -1 as an error code
-	//GLint colorUniformId = glGetUniformLocation(programId, "u_Color");
-	//if (colorUniformId == -1)
+	//if (!success)
 	//{
-	//	throw std::runtime_error("Location of uniform shader couldn't be found");
+	//	throw std::exception();
 	//}
 
 
-	// Detach and destroy the shader objects. These are no longer needed
-	// because we now have a complete shader program.
-	glDetachShader(programId, vertexShaderId);
-	glDeleteShader(vertexShaderId);
-	glDetachShader(programId, fragmentShaderId);
-	glDeleteShader(fragmentShaderId);
+	//// Create new shader program and attach our shader objects
+	//GLuint programId = glCreateProgram();
+	//glAttachShader(programId, vertexShaderId);
+	//glAttachShader(programId, fragmentShaderId);
 
-	//Get location of uniform so that OpenGL knows where to upload data to
-	GLint modelLoc = glGetUniformLocation(programId, "u_Model");
-	if (modelLoc == -1)
-	{
-		throw std::runtime_error("Location of model matrix couldn't be found");
-	}
+	//// Ensure the VAO "position" attribute stream gets set as the first position
+	//// during the link.
+	//glBindAttribLocation(programId, 0, "a_Position");
 
-	GLint projectionLoc = glGetUniformLocation(programId, "u_Projection");
-	if (projectionLoc == -1)
-	{
-		throw std::runtime_error("Location of projection matrix couldn't be found");
-	}
+	//////a_color attribute stream gets set as the second position during the link
+	////glBindAttribLocation(programId, 1, "a_Color");
+
+	//glBindAttribLocation(programId, 1, "a_TexCoord");
+
+	//// Perform the link and check for failure
+	//glLinkProgram(programId);
+	//glGetProgramiv(programId, GL_LINK_STATUS, &success);
+
+	//if (!success)
+	//{
+	//	throw std::exception();
+	//}
+
+
+
+	//// Detach and destroy the shader objects. These are no longer needed
+	//// because we now have a complete shader program.
+	//glDetachShader(programId, vertexShaderId);
+	//glDeleteShader(vertexShaderId);
+	//glDetachShader(programId, fragmentShaderId);
+	//glDeleteShader(fragmentShaderId);
+
+	////Get location of uniform so that OpenGL knows where to upload data to
+	//GLint modelLoc = glGetUniformLocation(programId, "u_Model");
+	//if (modelLoc == -1)
+	//{
+	//	throw std::runtime_error("Location of model matrix couldn't be found");
+	//}
+
+	//GLint projectionLoc = glGetUniformLocation(programId, "u_Projection");
+	//if (projectionLoc == -1)
+	//{
+	//	throw std::runtime_error("Location of projection matrix couldn't be found");
+	//}
 
 
 	bool quit = false;
@@ -370,7 +329,7 @@ int main()
 
 
 		//Instruct OpenGL to use our shader program and our VAO
-		glUseProgram(programId);
+		//glUseProgram(programId);
 		//glBindVertexArray(vaoId);
 		//glBindTexture(GL_TEXTURE_2D, bat.id());
 		
@@ -390,17 +349,17 @@ int main()
 		//Increase the angle for further rotation
 		//angle += 1.0f;
 
+		program.SetUniform("u_Model", model);
+		program.SetUniform("u_Projection", projection);
+
 		//Upload the model matrix
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
 		//Upload the projection matrix
-		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+		//glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
 		glEnable(GL_CULL_FACE);
 		glEnable(GL_DEPTH_TEST);
-
-		//Draw the vertices of the triangle
-		//glDrawArrays(GL_TRIANGLES, 0, 6);
 
 
 		glDrawArrays(GL_TRIANGLES, 0, cat.vertex_count());
@@ -408,8 +367,21 @@ int main()
 		glDisable(GL_CULL_FACE);
 		glDisable(GL_DEPTH_TEST);
 
+		
+		//Reset the state
+		glBindVertexArray(0);
+		//glBindTexture(GL_TEXTURE_2D,0);
+		glUseProgram(0);
 
-		//orthographic projection
+
+		//Do drawing
+		SDL_GL_SwapWindow(window);
+	}
+
+	return 0;
+}
+
+//orthographic projection
 		//projection = glm::ortho(0.0f, (float)WINDOW_WIDTH, 0.0f,(float)WINDOW_HEIGHT, 0.0f, 1.0f);
 
 		// Prepare model matrix. The scale is important because now our triangle
@@ -428,16 +400,3 @@ int main()
 		//Draw the vertices of the triangle
 		//glDrawArrays(GL_TRIANGLES, 0, 6);
 
-
-		//Reset the state
-		glBindVertexArray(0);
-		//glBindTexture(GL_TEXTURE_2D,0);
-		glUseProgram(0);
-
-
-		//Do drawing
-		SDL_GL_SwapWindow(window);
-	}
-
-	return 0;
-}

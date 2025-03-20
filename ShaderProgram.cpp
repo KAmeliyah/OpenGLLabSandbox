@@ -108,18 +108,41 @@ void ShaderProgram::LoadProgram(const std::string _vertPath,const std::string _f
 
 }
 
+
+void ShaderProgram::SetUniform(std::string _uniform, glm::mat4 _value)
+{
+	glUseProgram(m_Id);
+	GLint uniformLoc = glGetUniformLocation(m_Id, _uniform.c_str());
+	glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(_value));
+}
+
 void ShaderProgram::SetUniform(std::string _uniform, glm::vec4 _value)
 {
+	glUseProgram(m_Id);
+	GLint uniformLoc = glGetUniformLocation(m_Id, _uniform.c_str());
+	glUniform4fv(uniformLoc, 4, glm::value_ptr(_value));
+}
 
-
+void ShaderProgram::SetUniform(std::string _uniform, glm::vec3 _value)
+{
+	glUseProgram(m_Id);
+	GLint uniformLoc = glGetUniformLocation(m_Id, _uniform.c_str());
+	glUniform3fv(uniformLoc, 3, glm::value_ptr(_value));
 }
 
 void ShaderProgram::SetUniform(std::string _uniform, float _value)
 {
+	glUseProgram(m_Id);
+	GLint uniformLoc = glGetUniformLocation(m_Id, _uniform.c_str());
+	glUniform1f(uniformLoc, _value);
+
 }
 
 void ShaderProgram::SetUniform(std::string _uniform, Texture* _texture)
 {
+	glUseProgram(m_Id);
+	GLint uniformLoc = glGetUniformLocation(m_Id, _uniform.c_str());
+	
 }
 
 GLuint ShaderProgram::GetId()
