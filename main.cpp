@@ -20,7 +20,7 @@
 
 int main()
 {
-	Texture bat("curuthers/Whiskers_diffuse.png");
+	Texture catTexture("curuthers/Whiskers_diffuse.png");
 	
 	Model cat("curuthers/curuthers.obj");
 
@@ -199,106 +199,6 @@ int main()
 	ShaderProgram program("VertexShader.v", "FragmentShader.f");
 	
 
-	//v_Color needs to have the same name in each shader so that OpenGL knows how to link them
-
-	//const GLchar* vertexShaderSrc =
-	//	"attribute vec3 a_Position;			   " \
-	//	"attribute vec2 a_TexCoord;               " \
-	//	"                                       " \
-	//	"varying vec2 v_TexCoord;                 " \
-	//	"uniform mat4 u_Projection;				"\
-	//	"uniform mat4 u_Model;					"\
-	//	"                                       " \
-	//	"void main()                            " \
-	//	"{                                      " \
-	//	" gl_Position = u_Projection * u_Model * vec4(a_Position,1.0); " \
-	//	" v_TexCoord = a_TexCoord;                 " \
-	//	"}                                      " \
-	//	"                                       ";
-
-
-	//// Create a new vertex shader, attach source code, compile it and
-	//// check for errors.
-	//GLuint vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
-	//glShaderSource(vertexShaderId, 1, &vertexShaderSrc, NULL);
-	//glCompileShader(vertexShaderId);
-	//GLint success = 0;
-	//glGetShaderiv(vertexShaderId, GL_COMPILE_STATUS, &success);
-
-	//if (!success)
-	//{
-	//	throw std::runtime_error("Error while making the vertex shader");
-	//}
-
-	//
-	//const GLchar* fragmentShaderSrc =
-	//	"uniform sampler2D u_Texture; "\
-	//	"varying vec2 v_TexCoord;    " \
-	//	"                          " \
-	//	"void main()               " \
-	//	"{                         " \
-	//	"	vec4 tex = texture2D(u_Texture, v_TexCoord);"\
-	//	"	gl_FragColor = tex;		 " \
-	//	"}                         " \
-	//	"                          ";
-
-	//// Create a new fragment shader, attach source code, compile it and
-	//// check for errors.
-	//GLuint fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
-	//glShaderSource(fragmentShaderId, 1, &fragmentShaderSrc, NULL);
-	//glCompileShader(fragmentShaderId);
-	//glGetShaderiv(fragmentShaderId, GL_COMPILE_STATUS, &success);
-
-	//if (!success)
-	//{
-	//	throw std::exception();
-	//}
-
-
-	//// Create new shader program and attach our shader objects
-	//GLuint programId = glCreateProgram();
-	//glAttachShader(programId, vertexShaderId);
-	//glAttachShader(programId, fragmentShaderId);
-
-	//// Ensure the VAO "position" attribute stream gets set as the first position
-	//// during the link.
-	//glBindAttribLocation(programId, 0, "a_Position");
-
-	//////a_color attribute stream gets set as the second position during the link
-	////glBindAttribLocation(programId, 1, "a_Color");
-
-	//glBindAttribLocation(programId, 1, "a_TexCoord");
-
-	//// Perform the link and check for failure
-	//glLinkProgram(programId);
-	//glGetProgramiv(programId, GL_LINK_STATUS, &success);
-
-	//if (!success)
-	//{
-	//	throw std::exception();
-	//}
-
-
-
-	//// Detach and destroy the shader objects. These are no longer needed
-	//// because we now have a complete shader program.
-	//glDetachShader(programId, vertexShaderId);
-	//glDeleteShader(vertexShaderId);
-	//glDetachShader(programId, fragmentShaderId);
-	//glDeleteShader(fragmentShaderId);
-
-	////Get location of uniform so that OpenGL knows where to upload data to
-	//GLint modelLoc = glGetUniformLocation(programId, "u_Model");
-	//if (modelLoc == -1)
-	//{
-	//	throw std::runtime_error("Location of model matrix couldn't be found");
-	//}
-
-	//GLint projectionLoc = glGetUniformLocation(programId, "u_Projection");
-	//if (projectionLoc == -1)
-	//{
-	//	throw std::runtime_error("Location of projection matrix couldn't be found");
-	//}
 
 
 	bool quit = false;
@@ -334,7 +234,7 @@ int main()
 		//glBindTexture(GL_TEXTURE_2D, bat.id());
 		
 		glBindVertexArray(cat.vao_id());
-		glBindTexture(GL_TEXTURE_2D, bat.id());
+		glBindTexture(GL_TEXTURE_2D, catTexture.id());
 		
 		//glUniform4f(colorUniformId, 0, 1, 0, 1);
 
@@ -344,19 +244,14 @@ int main()
 		//Prep the model matrix
 		glm::mat4 model(1.0f);
 		model = glm::translate(model, glm::vec3(0, 0, -20));
-		//model = glm::rotate(model, glm::radians(angle), glm::vec3(0, 1, 0));
+		model = glm::rotate(model, glm::radians(angle), glm::vec3(0, 1, 0));
 
 		//Increase the angle for further rotation
-		//angle += 1.0f;
+		angle += 1.0f;
 
 		program.SetUniform("u_Model", model);
 		program.SetUniform("u_Projection", projection);
 
-		//Upload the model matrix
-		//glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-
-		//Upload the projection matrix
-		//glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
 		glEnable(GL_CULL_FACE);
 		glEnable(GL_DEPTH_TEST);
