@@ -1,0 +1,30 @@
+class Camera
+{
+
+    vec3 pos
+    vec3 rot
+
+    Move()
+
+    Rotate()
+
+}
+
+
+class Window
+{
+	SDL window
+	
+	create context
+	
+	std::vector <Camera> cameras[]	
+	int active camera
+
+	EventHandler -> polls events
+		
+
+}
+
+Rework Shader program for more flexibility with bindind attributes
+
+https://www.khronos.org/opengl/wiki/Shader_Compilation#Shader_error_handling

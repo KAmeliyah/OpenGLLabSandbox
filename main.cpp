@@ -49,7 +49,7 @@ int main()
 
 	float angle = 0;
 
-	ShaderProgram program("VertexShader.v", "FragmentShader.f");
+	ShaderProgram program("VertexShader.v", "SpecularFragmentShader.f");
 	
 
 	bool quit = false;
@@ -95,11 +95,14 @@ int main()
 		model = glm::translate(model, glm::vec3(0, 0, -20));
 		model = glm::rotate(model, glm::radians(angle), glm::vec3(0, 1, 0));
 
+		glm::mat4 view = glm::inverse(model);
+
 		//Increase the angle for further rotation
-		angle += 1.0f;
+		//angle += 1.0f;
 
 		program.SetUniform("u_Model", model);
 		program.SetUniform("u_Projection", projection);
+		program.SetUniform("u_View", view);
 
 
 		glEnable(GL_CULL_FACE);

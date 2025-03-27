@@ -80,6 +80,15 @@ void ShaderProgram::LoadProgram(const std::string _vertPath,const std::string _f
 
 	if (!success)
 	{
+		GLint maxLength = 0;
+		glGetShaderiv(fragmentShaderId, GL_INFO_LOG_LENGTH, &maxLength);
+
+		// The maxLength includes the NULL character
+		std::vector<GLchar> errorLog(maxLength);
+		glGetShaderInfoLog(fragmentShaderId, maxLength, &maxLength, &errorLog[0]);
+
+		std::cout << &errorLog[0] << std::endl;
+
 		throw std::runtime_error("Error while making the fragment shader");
 	}
 
@@ -91,6 +100,7 @@ void ShaderProgram::LoadProgram(const std::string _vertPath,const std::string _f
 	
 	glBindAttribLocation(m_Id, 0, "a_Position");
 	glBindAttribLocation(m_Id, 1, "a_TexCoord");
+	glBindAttribLocation(m_Id, 2, "a_Normal");
 
 	glLinkProgram(m_Id);
 	glGetProgramiv(m_Id, GL_LINK_STATUS, &success);
