@@ -6,6 +6,10 @@
 #include "Texture.h"
 #include "Model.h"
 #include "ShaderProgram.h"
+#include "EventHandler.h"
+
+//delta time
+#include <chrono>
 
 
 
@@ -20,6 +24,7 @@
 
 int main()
 {
+	EventHandler eventHandler;
 	
 	Model cat("curuthers/curuthers.obj");
 
@@ -50,30 +55,49 @@ int main()
 	float angle = 0;
 
 	ShaderProgram program("VertexShader.v", "SpecularFragmentShader.f");
+		
+
 	
+	float timestep = 1000.0 / 60.0;
+
+	Uint32 startTime = SDL_GetTicks();
+	Uint32 lastTime = startTime;
+	float accumulatedTime = 0.0f;
+
 
 	bool quit = false;
 
-	while (!quit)
+	while (!eventHandler.GetExit())
 	{
+
+		Uint32 currentTime = SDL_GetTicks();
+		float deltaTime = (currentTime - lastTime) / 1000.0f;
+
+		lastTime = currentTime;
+
+		accumulatedTime += deltaTime;
+
+
+		//Handle events
+		eventHandler.HandleEvents();
+
+		//Fixed frame time
+		while (accumulatedTime >= timestep)
+		{
+
+
+			//Update GameWindow(timestep)
+
+			accumulatedTime -= timestep;
+		}
+
+		//Render the frame
 
 		int width = 0;
 		int height = 0;
 
 		SDL_GetWindowSize(window, &width, &height);
 		glViewport(0, 0, width, height);
-
-		SDL_Event e = { 0 };
-
-		while (SDL_PollEvent(&e))
-		{
-			if (e.type == SDL_QUIT)
-			{
-				quit = true;
-			}
-
-			
-		}
 
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -98,7 +122,7 @@ int main()
 		glm::mat4 view = glm::inverse(model);
 
 		//Increase the angle for further rotation
-		//angle += 1.0f;
+		angle += 1.0f;
 
 		program.SetUniform("u_Model", model);
 		program.SetUniform("u_Projection", projection);
@@ -121,6 +145,9 @@ int main()
 
 		//Do drawing
 		SDL_GL_SwapWindow(window);
+
+		
+
 	}
 
 	return 0;
