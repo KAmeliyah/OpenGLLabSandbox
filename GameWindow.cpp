@@ -7,6 +7,7 @@ GameWindow::GameWindow()
 		WINDOW_WIDTH, WINDOW_HEIGHT,
 		SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 
+
 	//Connect to graphics card
 
 	if (!SDL_GL_CreateContext(m_Window))
@@ -14,6 +15,14 @@ GameWindow::GameWindow()
 		std::cout << "No context" << std::endl;
 		throw std::runtime_error("No context");
 	}
+
+	if (glewInit() != GLEW_OK)
+	{
+		throw std::runtime_error("Failed to initialise glew");
+	}
+
+	m_WindowWidth = WINDOW_WIDTH;
+	m_WindowHeight = WINDOW_HEIGHT;
 
 	//set up event handler
 	m_EventManager = std::make_shared<EventHandler>();
