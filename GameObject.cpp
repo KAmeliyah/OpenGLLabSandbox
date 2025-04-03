@@ -49,6 +49,16 @@ void GameObject::Draw(float _dt, std::shared_ptr<ShaderProgram> _shader)
 
 }
 
+void GameObject::SetShader(std::shared_ptr<ShaderProgram> _shader)
+{
+	m_Shader = _shader;
+}
+
+void GameObject::SetEventManager(std::shared_ptr<EventHandler> _eventHandler)
+{
+	m_EventHandler = _eventHandler;
+}
+
 std::shared_ptr<Model> GameObject::GetModel() const
 {
 	return m_Model;

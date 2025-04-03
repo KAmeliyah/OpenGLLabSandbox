@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include <GL/glew.h>
 #include <glm/ext.hpp>
 #include <glm/glm.hpp>
 #include <memory>
@@ -8,6 +9,7 @@
 #include "EventHandler.h"
 #include "GameObject.h"
 #include "Camera.h"
+#include "ShaderProgram.h"
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
@@ -36,10 +38,15 @@ private:
 	int m_WindowWidth{ 0 };
 	int m_WindowHeight{ 0 };
 
-	std::shared_ptr<EventHandler> eventHandler = std::make_shared<EventHandler>();
+	std::shared_ptr<ShaderProgram> m_Specular;
 
-	std::shared_ptr<Camera> camera = std::make_shared<Camera>();
+	std::vector<std::shared_ptr<GameObject>> m_Objects;
 
+	std::shared_ptr<EventHandler> m_EventManager;
+
+	std::shared_ptr<Camera> m_Camera;
+
+	//For later, when there is multiple cameras
 	std::vector<std::shared_ptr<Camera>> m_SceneCameras;
 
 	bool m_Quit{ false };

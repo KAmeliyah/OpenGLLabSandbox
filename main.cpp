@@ -3,15 +3,8 @@
 #include <iostream>
 #include <glm/ext.hpp>
 #include <glm/glm.hpp>
-#include "Texture.h"
-#include "Model.h"
-#include "ShaderProgram.h"
-#include "EventHandler.h"
 
-//delta time
-#include <chrono>
-
-
+#include "GameWindow.h"
 
 //only define in main but use stb image header where needed
 #define STB_IMAGE_IMPLEMENTATION
@@ -24,39 +17,17 @@
 
 int main()
 {
-	EventHandler eventHandler;
-	
-	Model cat("curuthers/curuthers.obj");
-
-	Texture catTexture("curuthers/Whiskers_diffuse.png");
-
-	SDL_Window* window = SDL_CreateWindow("Triangle",
-		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-		WINDOW_WIDTH, WINDOW_HEIGHT,
-		SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
-
-	//Connect to graphics card
-
-	if (!SDL_GL_CreateContext(window))
-	{
-		throw std::runtime_error("No context");
-	}
 
 	//can't init glew without connection to graphics card
 	//Glew loads OpenGL and extensions at runtime
 
-	int x = glewInit();
 
 	if (glewInit() != GLEW_OK)
 	{
 		throw std::runtime_error("Failed to initialise glew");
 	}
-
-	float angle = 0;
-
-	ShaderProgram program("VertexShader.v", "SpecularFragmentShader.f");
 		
-
+	std::shared_ptr<GameWindow> game = std::make_shared<GameWindow>();
 	
 	float dt = 1000.0f / 60.0f;
 
@@ -65,9 +36,9 @@ int main()
 	float accumulatedTime = 0.0f;
 
 
-	bool quit = false;
 
-	while (!eventHandler.GetExit())
+
+	while (!game->GetQuit())
 	{
 
 		Uint32 currentTime = SDL_GetTicks();
@@ -77,75 +48,21 @@ int main()
 
 		accumulatedTime += frameTime;
 
-
-		//Handle events
-		eventHandler.HandleEvents();
-
+		game->Input();
 
 		
 		while (accumulatedTime >= dt)
 		{
 
-
-			//Update GameWindow(timestep)
+			game->Update(dt);
+			
 
 			accumulatedTime -= dt;
 		}
 
+		game->Draw(dt);
+
 		//Render the frame
-
-		int width = 0;
-		int height = 0;
-
-		SDL_GetWindowSize(window, &width, &height);
-		glViewport(0, 0, width, height);
-
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
-		//Instruct OpenGL to use our shader program and our VAO
-		//glUseProgram(programId);
-		//glBindVertexArray(vaoId);
-		//glBindTexture(GL_TEXTURE_2D, bat.id());
-		
-		glBindVertexArray(cat.vao_id());
-		glBindTexture(GL_TEXTURE_2D, catTexture.id());
-
-		//Prepare the perspective projection matrix
-		glm::mat4 projection = glm::perspective(glm::radians(45.0f), float(width) / float(height), 0.1f, 100.0f);
-
-		//Prep the model matrix
-		glm::mat4 model(1.0f);
-		model = glm::translate(model, glm::vec3(0, 0, -20));
-		model = glm::rotate(model, glm::radians(angle), glm::vec3(0, 1, 0));
-
-		glm::mat4 view = glm::inverse(model);
-
-		//Increase the angle for further rotation
-		angle += 1.0f;
-
-		program.SetUniform("u_Model", model);
-		program.SetUniform("u_Projection", projection);
-		program.SetUniform("u_View", view);
-
-
-		glEnable(GL_CULL_FACE);
-		glEnable(GL_DEPTH_TEST);
-
-
-		glDrawArrays(GL_TRIANGLES, 0, cat.vertex_count());
-
-		glDisable(GL_CULL_FACE);
-		glDisable(GL_DEPTH_TEST);
-
-		//Reset the state
-		glBindVertexArray(0);
-		//glBindTexture(GL_TEXTURE_2D,0);
-		glUseProgram(0);
-
-		//Do drawing
-		SDL_GL_SwapWindow(window);
 
 		
 
@@ -299,4 +216,78 @@ int main()
 
 		//Draw the vertices of the triangle
 		//glDrawArrays(GL_TRIANGLES, 0, 6);
+
+
+//EventHandler eventHandler;
+	//
+	//Model cat("curuthers/curuthers.obj");
+
+	//Texture catTexture("curuthers/Whiskers_diffuse.png");
+
+	//SDL_Window* window = SDL_CreateWindow("Triangle",
+	//	SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+	//	WINDOW_WIDTH, WINDOW_HEIGHT,
+	//	SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+
+	////Connect to graphics card
+
+	//if (!SDL_GL_CreateContext(window))
+	//{
+	//	throw std::runtime_error("No context");
+	//}
+
+
+
+//int width = 0;
+		//int height = 0;
+
+		//SDL_GetWindowSize(window, &width, &height);
+		//glViewport(0, 0, width, height);
+
+		//glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+		////Instruct OpenGL to use our shader program and our VAO
+		////glUseProgram(programId);
+		////glBindVertexArray(vaoId);
+		////glBindTexture(GL_TEXTURE_2D, bat.id());
+		//
+		//glBindVertexArray(cat.vao_id());
+		//glBindTexture(GL_TEXTURE_2D, catTexture.id());
+
+		////Prepare the perspective projection matrix
+		//glm::mat4 projection = glm::perspective(glm::radians(45.0f), float(width) / float(height), 0.1f, 100.0f);
+
+		////Prep the model matrix
+		//glm::mat4 model(1.0f);
+		//model = glm::translate(model, glm::vec3(0, 0, -20));
+		//model = glm::rotate(model, glm::radians(angle), glm::vec3(0, 1, 0));
+
+		//glm::mat4 view = glm::inverse(model);
+
+		////Increase the angle for further rotation
+		//angle += 1.0f;
+
+		//program.SetUniform("u_Model", model);
+		//program.SetUniform("u_Projection", projection);
+		//program.SetUniform("u_View", view);
+
+
+		//glEnable(GL_CULL_FACE);
+		//glEnable(GL_DEPTH_TEST);
+
+
+		//glDrawArrays(GL_TRIANGLES, 0, cat.vertex_count());
+
+		//glDisable(GL_CULL_FACE);
+		//glDisable(GL_DEPTH_TEST);
+
+		////Reset the state
+		//glBindVertexArray(0);
+		////glBindTexture(GL_TEXTURE_2D,0);
+		//glUseProgram(0);
+
+		////Do drawing
+		//SDL_GL_SwapWindow(window);
 

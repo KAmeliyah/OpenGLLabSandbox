@@ -1,10 +1,13 @@
 #pragma once
 #include <glm/ext.hpp>
 #include <glm/glm.hpp>
+#include <memory>
+#include "EventHandler.h"
+
 
 struct Camera
 {
-	Camera();
+	Camera(int _windowWidth, int _windowHeight);
 	~Camera();
 	
 	void Move(float _dt);
@@ -16,6 +19,11 @@ struct Camera
 
 	void SetTarget(glm::vec3 _targetPos);
 
+	void SetEventManager(std::shared_ptr<EventHandler> _eventHandler);
+
+	glm::mat4& GetProjection();
+	glm::mat4& GetView();
+
 
 private:
 	glm::vec3 m_Position;
@@ -24,9 +32,12 @@ private:
 	glm::vec3 m_Target;
 	glm::vec3 m_CameraDirection;
 
+	glm::vec3 m_CameraUp;
+
 	glm::mat4 m_Projection;
 	glm::mat4 m_View;
 
+	std::shared_ptr<EventHandler> m_EventHandler{ nullptr };
 
 };
 

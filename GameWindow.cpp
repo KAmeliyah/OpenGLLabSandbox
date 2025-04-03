@@ -2,6 +2,7 @@
 
 GameWindow::GameWindow()
 {
+
 	m_Window = SDL_CreateWindow("Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 		WINDOW_WIDTH, WINDOW_HEIGHT,
 		SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
@@ -13,6 +14,20 @@ GameWindow::GameWindow()
 		std::cout << "No context" << std::endl;
 		throw std::runtime_error("No context");
 	}
+
+	//set up event handler
+	m_EventManager = std::make_shared<EventHandler>();
+
+	//Set up main camera
+	m_Camera = std::make_shared<Camera>(m_WindowWidth, m_WindowHeight);
+	m_Camera->SetEventManager(m_EventManager);
+	
+	std::shared_ptr<GameObject> m_Player = std::make_shared<GameObject>("curuthers/curuthers.obj", "curuthers/Whiskers_diffuse.png");
+	m_Player->SetEventManager(m_EventManager);
+	m_Objects.push_back(m_Player);
+
+	m_Specular = std::make_shared<ShaderProgram>("VertexShader.v", "SpecularFragmentShader.f");
+
 
 }
 
@@ -33,10 +48,10 @@ void GameWindow::Input()
 
 
 	//Keyboard Event
-	eventHandler->HandleEvents();
+	m_EventManager->HandleEvents();
 
 
-	if (eventHandler->GetExit())
+	if (m_EventManager->GetExit())
 	{
 		m_Quit = true;
 	}
@@ -52,7 +67,12 @@ void GameWindow::Update(float _dt)
 {
 	//Apply movement
 
+	m_Camera->Update(_dt);
 
+	for (int i = 0; i < m_Objects.size(); i++)
+	{
+		m_Objects.at(i)->Update(_dt);
+	}
 
 
 }
@@ -68,12 +88,18 @@ void GameWindow::Draw(float _dt)
 
 	//GameObject in vector's vertex count
 
-	//glDrawArrays(GL_TRIANGLES, 0, cat.vertex_count());
+	m_Specular->SetUniform("u_Projection", m_Camera->GetProjection());
+	m_Specular->SetUniform("u_View", m_Camera->GetView());
+
+	for (int i = 0; i < m_Objects.size(); i++)
+	{
+		m_Objects.at(i)->Draw(_dt,m_Specular);
+	}
 
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
 
-	//Reset the state
+	
 
 
 	SDL_GL_SwapWindow(m_Window);
