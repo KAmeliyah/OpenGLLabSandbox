@@ -24,7 +24,7 @@ private:
 	glm::vec3 m_Target;
 	glm::vec3 m_CameraDirection;
 
-	glm::mat4 m_Perspective;
+	glm::mat4 m_Projection;
 	glm::mat4 m_View;
 
 

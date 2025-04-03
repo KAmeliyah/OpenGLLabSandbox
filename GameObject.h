@@ -20,7 +20,9 @@ struct GameObject
 
 	void Update(float _dt);
 
-	void Draw(float _dt);
+	void Draw(float _dt, std::shared_ptr<ShaderProgram> _shader);
+
+	void SetShader(std::shared_ptr<ShaderProgram> _shader);
 
 	
 	//Make copy so underlying object can be modified safely
@@ -34,9 +36,12 @@ private:
 
 	std::shared_ptr<Texture> m_Texture{ nullptr };
 
+	std::shared_ptr<ShaderProgram> m_Shader{ nullptr };
+
 	
 	glm::vec3 m_Position = glm::vec3(0);
-	glm::mat4 m_ModelMat = glm::mat4(1.0);
+	glm::vec3 m_Rotation = glm::vec4(0, 0, 0, 1);
+	glm::mat4 m_ModelMatrix = glm::mat4(1.0);
 
 
 };

@@ -41,13 +41,16 @@ void GameWindow::Input()
 		m_Quit = true;
 	}
 
+	//Handle movement input
+
+
 }
 
 
 
 void GameWindow::Update(float _dt)
 {
-
+	//Apply movement
 
 
 
@@ -69,6 +72,11 @@ void GameWindow::Draw(float _dt)
 
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
+
+	//Reset the state
+
+
+	SDL_GL_SwapWindow(m_Window);
 
 }
 

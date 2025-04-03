@@ -58,7 +58,7 @@ int main()
 		
 
 	
-	float timestep = 1000.0 / 60.0;
+	float dt = 1000.0f / 60.0f;
 
 	Uint32 startTime = SDL_GetTicks();
 	Uint32 lastTime = startTime;
@@ -71,24 +71,25 @@ int main()
 	{
 
 		Uint32 currentTime = SDL_GetTicks();
-		float deltaTime = (currentTime - lastTime) / 1000.0f;
+		float frameTime = (currentTime - lastTime) / 1000.0f;
 
 		lastTime = currentTime;
 
-		accumulatedTime += deltaTime;
+		accumulatedTime += frameTime;
 
 
 		//Handle events
 		eventHandler.HandleEvents();
 
-		//Fixed frame time
-		while (accumulatedTime >= timestep)
+
+		
+		while (accumulatedTime >= dt)
 		{
 
 
 			//Update GameWindow(timestep)
 
-			accumulatedTime -= timestep;
+			accumulatedTime -= dt;
 		}
 
 		//Render the frame

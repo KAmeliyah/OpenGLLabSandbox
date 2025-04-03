@@ -3,11 +3,11 @@
 #include <SDL2/SDL.h>
 #include <glm/ext.hpp>
 #include <glm/glm.hpp>
-#include "Texture.h"
-#include "Model.h"
-#include "ShaderProgram.h"
-#include "EventHandler.h"
 #include <memory>
+
+#include "EventHandler.h"
+#include "GameObject.h"
+#include "Camera.h"
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
@@ -37,6 +37,10 @@ private:
 	int m_WindowHeight{ 0 };
 
 	std::shared_ptr<EventHandler> eventHandler = std::make_shared<EventHandler>();
+
+	std::shared_ptr<Camera> camera = std::make_shared<Camera>();
+
+	std::vector<std::shared_ptr<Camera>> m_SceneCameras;
 
 	bool m_Quit{ false };
 
