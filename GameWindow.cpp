@@ -16,6 +16,9 @@ GameWindow::GameWindow()
 		throw std::runtime_error("No context");
 	}
 
+
+	//can't init glew without connection to graphics card
+	//Glew loads OpenGL and extensions at runtime
 	if (glewInit() != GLEW_OK)
 	{
 		throw std::runtime_error("Failed to initialise glew");

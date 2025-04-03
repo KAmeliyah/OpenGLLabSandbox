@@ -18,14 +18,9 @@
 int main()
 {
 
-	//can't init glew without connection to graphics card
-	//Glew loads OpenGL and extensions at runtime
+	
 
 	std::shared_ptr<GameWindow> game = std::make_shared<GameWindow>();
-
-
-	
-		
 
 	
 	float dt = 1000.0f / 60.0f;
@@ -63,7 +58,6 @@ int main()
 
 		//Render the frame
 
-		
 
 	}
 

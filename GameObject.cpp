@@ -34,6 +34,7 @@ void GameObject::Draw(float _dt, std::shared_ptr<ShaderProgram> _shader)
 	glBindTexture(GL_TEXTURE_2D, m_Texture->id());
 
 	//Model matrix needs to be reset each time or else it flies off into the distance
+
 	glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, -20));
 	//m_ModelMatrix = glm::rotate(m_ModelMatrix, glm::radians(m_Rotation.z), glm::vec3(0, 1, 0));
 
