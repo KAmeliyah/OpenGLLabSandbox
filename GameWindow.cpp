@@ -3,6 +3,8 @@
 GameWindow::GameWindow()
 {
 
+	
+
 	m_Window = SDL_CreateWindow("Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 		WINDOW_WIDTH, WINDOW_HEIGHT,
 		SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
@@ -61,7 +63,8 @@ void GameWindow::Input()
 
 	//Keyboard Event
 	m_EventManager->HandleEvents();
-
+	
+	
 
 	if (m_EventManager->GetExit())
 	{
@@ -83,6 +86,8 @@ void GameWindow::Update(float _dt)
 
 	for (int i = 0; i < m_Objects.size(); i++)
 	{
+
+		
 		m_Objects.at(i)->Update(_dt);
 	}
 

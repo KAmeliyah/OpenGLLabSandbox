@@ -36,18 +36,17 @@ int main()
 	{
 
 		Uint32 currentTime = SDL_GetTicks();
-		float frameTime = (currentTime - lastTime) / 1000.0f;
-
+		float frameTime = (currentTime - lastTime);
 		lastTime = currentTime;
 
 		accumulatedTime += frameTime;
 
+		
 		game->Input();
-
 		
 		while (accumulatedTime >= dt)
 		{
-
+			
 			game->Update(dt);
 			
 

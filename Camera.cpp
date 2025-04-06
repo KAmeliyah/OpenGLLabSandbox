@@ -25,6 +25,7 @@ Camera::~Camera()
 {
 }
 
+
 void Camera::Move(float _dt)
 {
 
@@ -38,6 +39,10 @@ void Camera::Rotate(float _dt, float _angle, glm::vec3 _axis)
 
 void Camera::Update(float _dt)
 {
+
+	//Use Event Manager to handle inputs
+
+
 
 	m_View = glm::lookAt(m_Position, m_Target, m_CameraUp);
 	

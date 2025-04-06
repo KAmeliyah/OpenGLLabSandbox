@@ -41,15 +41,17 @@ void EventHandler::HandleEvents()
 				switch (event.key.keysym.sym)
 				{
 					case SDLK_w:
-						m_MoveUp = true;
+						m_MoveForward = true;
+						
 						break;
 				
 					case SDLK_s:
-						m_MoveDown = true;
+						m_MoveBack = true;
 						break;
 				
 					case SDLK_d:
 						m_MoveRight = true;
+						
 						break;
 				
 					case SDLK_a:
@@ -63,11 +65,11 @@ void EventHandler::HandleEvents()
 				switch (event.key.keysym.sym)
 				{
 					case SDLK_w:
-						m_MoveUp = false;
+						m_MoveForward = false;
 						break;
 
 					case SDLK_s:
-						m_MoveDown = false;
+						m_MoveBack = false;
 						break;
 
 					case SDLK_d:
@@ -100,14 +102,14 @@ bool EventHandler::GetMoveLeft()
 	return m_MoveLeft;
 }
 
-bool EventHandler::GetMoveUp()
+bool EventHandler::GetMoveForward()
 {
-	return m_MoveUp;
+	return m_MoveForward;
 }
 
-bool EventHandler::GetMoveDown()
+bool EventHandler::GetMoveBack()
 {
-	return m_MoveDown;
+	return m_MoveBack;
 }
 
 bool EventHandler::GetJump()
@@ -123,4 +125,14 @@ bool EventHandler::GetAttack()
 bool EventHandler::GetExit()
 {
 	return m_Exit;
+}
+
+int EventHandler::GetMouseX()
+{
+	return m_MouseX;
+}
+
+int EventHandler::GetMouseY()
+{
+	return m_MouseY;
 }

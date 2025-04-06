@@ -19,6 +19,7 @@ struct GameObject
 
 	~GameObject();
 
+
 	void Update(float _dt);
 
 	void Draw(float _dt, std::shared_ptr<ShaderProgram> _shader);
@@ -43,10 +44,14 @@ private:
 
 	std::shared_ptr<EventHandler> m_EventHandler{ nullptr };
 
+
+	glm::vec3 m_Position;
+	glm::vec3 m_Rotation;
+
+	//glm::vec3 m_Velocity;
 	
-	glm::vec3 m_Position = glm::vec3(0);
-	glm::vec3 m_Rotation = glm::vec4(0, 0, 0, 1);
-	glm::mat4 m_ModelMatrix = glm::mat4(1.0);
+
+	float m_MoveSpeed;
 
 
 };
