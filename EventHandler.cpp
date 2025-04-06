@@ -51,7 +51,7 @@ void EventHandler::HandleEvents()
 				
 					case SDLK_d:
 						m_MoveRight = true;
-						
+						std::cout << GetMoveRight() << std::endl;
 						break;
 				
 					case SDLK_a:

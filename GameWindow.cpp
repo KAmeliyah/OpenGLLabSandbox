@@ -64,7 +64,11 @@ void GameWindow::Input()
 	//Keyboard Event
 	m_EventManager->HandleEvents();
 	
-	
+	//This isn't returning true when it should be
+	if (m_EventManager->GetMoveRight())
+	{
+		std::cout << "Moving Right" << std::endl;
+	}
 
 	if (m_EventManager->GetExit())
 	{
