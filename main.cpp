@@ -23,20 +23,17 @@ int main()
 	std::shared_ptr<GameWindow> game = std::make_shared<GameWindow>();
 
 	
-	float dt = 1000.0f / 60.0f;
+	float dt = 1.0f / 60.0f;
 
 	Uint32 startTime = SDL_GetTicks();
 	Uint32 lastTime = startTime;
 	float accumulatedTime = 0.0f;
 
-
-
-
 	while (!game->GetQuit())
 	{
 
 		Uint32 currentTime = SDL_GetTicks();
-		float frameTime = (currentTime - lastTime);
+		float frameTime = (currentTime - lastTime) / 1000.0f;
 		lastTime = currentTime;
 
 		accumulatedTime += frameTime;
@@ -54,6 +51,7 @@ int main()
 		}
 
 		game->Draw(dt);
+		
 
 		//Render the frame
 

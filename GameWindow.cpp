@@ -63,12 +63,6 @@ void GameWindow::Input()
 
 	//Keyboard Event
 	m_EventManager->HandleEvents();
-	
-	//This isn't returning true when it should be
-	if (m_EventManager->GetMoveRight())
-	{
-		std::cout << "Moving Right" << std::endl;
-	}
 
 	if (m_EventManager->GetExit())
 	{
@@ -90,8 +84,6 @@ void GameWindow::Update(float _dt)
 
 	for (int i = 0; i < m_Objects.size(); i++)
 	{
-
-		
 		m_Objects.at(i)->Update(_dt);
 	}
 
@@ -129,6 +121,7 @@ void GameWindow::Draw(float _dt)
 
 void GameWindow::Quit()
 {
+
 }
 
 bool GameWindow::GetQuit() const

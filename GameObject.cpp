@@ -4,8 +4,9 @@ GameObject::GameObject()
 {
 	m_Position = glm::vec3(0.0f, 0.0f, -20.0f);
 	m_Rotation = glm::vec3(0);
+	m_Velocity = glm::vec3(0);
 
-	m_MoveSpeed = 3.0f;
+	m_MoveSpeed = 0.5f;
 
 }
 
@@ -29,28 +30,27 @@ void GameObject::Update(float _dt)
 
 	if (m_EventHandler->GetMoveRight())
 	{
-		m_Position += glm::vec3(1.0f, 0.0f, 0.0f)  * m_MoveSpeed * _dt;
+		m_Position += glm::vec3(1.0f, 0.0f, 0.0f) * _dt;
 		
 	}
 
 	if (m_EventHandler->GetMoveLeft())
 	{
-		m_Position += glm::vec3(-1.0f, 0.0f, 0.0f) * m_MoveSpeed * _dt;
+		m_Position += glm::vec3(-1.0f, 0.0f, 0.0f) * _dt;
 	}
 
 	if (m_EventHandler->GetMoveForward())
 	{
-		m_Position += glm::vec3(0.0f, 0.0f, 1.0f) * m_MoveSpeed * _dt;
+		m_Position += glm::vec3(0.0f, 0.0f, 1.0f) * _dt;
 	}
 
 	if (m_EventHandler->GetMoveBack())
 	{
-		m_Position += glm::vec3(0.0f, 0.0f, -1.0f) * m_MoveSpeed * _dt;
+		m_Position += glm::vec3(0.0f, 0.0f, -1.0f) * _dt;
 	}
 
 
-
-
+	
 
 }
 
@@ -60,9 +60,9 @@ void GameObject::Draw(float _dt, std::shared_ptr<ShaderProgram> _shader)
 	glBindVertexArray(m_Model->vao_id());
 	glBindTexture(GL_TEXTURE_2D, m_Texture->id());
 
-	//Model matrix needs to be reset each time or else it flies off into the distance
+	
 
-	glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f),m_Position);
+	glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), m_Position);
 	//modelMatrix = glm::rotate(modelMatrix, glm::radians(m_Rotation.z), glm::vec3(0, 1, 0));
 
 	//m_Rotation.z += 1;

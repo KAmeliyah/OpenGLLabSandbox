@@ -19,6 +19,8 @@ Camera::Camera(int _windowWidth, int _windowHeight)
 	m_CameraUp = glm::vec3(0, 1, 0);
 
 	m_Projection = glm::perspective(glm::radians(45.0f), float(_windowWidth) / float(_windowHeight), 0.1f, 100.0f);
+
+	m_View = glm::lookAt(m_Position, m_Target, m_CameraUp);
 }
 
 Camera::~Camera()
@@ -44,7 +46,7 @@ void Camera::Update(float _dt)
 
 
 
-	m_View = glm::lookAt(m_Position, m_Target, m_CameraUp);
+	
 	
 
 }

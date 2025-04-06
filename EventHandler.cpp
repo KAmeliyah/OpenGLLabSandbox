@@ -25,6 +25,7 @@ void EventHandler::HandleEvents()
 						break;
 
 				}
+				break;
 			
 			case SDL_MOUSEBUTTONUP:
 				switch (event.button.button)
@@ -36,6 +37,7 @@ void EventHandler::HandleEvents()
 					default:
 						break;
 				}
+				break;
 
 			case SDL_KEYDOWN:
 				switch (event.key.keysym.sym)
@@ -51,7 +53,6 @@ void EventHandler::HandleEvents()
 				
 					case SDLK_d:
 						m_MoveRight = true;
-						std::cout << GetMoveRight() << std::endl;
 						break;
 				
 					case SDLK_a:
@@ -61,6 +62,7 @@ void EventHandler::HandleEvents()
 					default:
 						break;
 				}
+				break;
 			case SDL_KEYUP:
 				switch (event.key.keysym.sym)
 				{
@@ -83,6 +85,7 @@ void EventHandler::HandleEvents()
 					default:
 						break;
 				}
+				break;
 
 
 			default:
