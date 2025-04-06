@@ -48,7 +48,7 @@ private:
 	glm::vec3 m_Position;
 	glm::vec3 m_Rotation;
 
-	glm::vec3 m_Velocity;
+	
 	
 
 	float m_MoveSpeed;

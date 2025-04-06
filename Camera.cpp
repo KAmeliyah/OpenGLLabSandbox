@@ -13,14 +13,14 @@ Camera::Camera(int _windowWidth, int _windowHeight)
 	m_Target = glm::vec3(0, 0, 0);
 
 	//Set up the direction the camera is pointing
-	m_CameraDirection = glm::normalize(m_Position - m_Target);
+	m_CameraDirection = glm::vec3(0,0,-1);
 
 	//Set the up direction for the camera
 	m_CameraUp = glm::vec3(0, 1, 0);
 
 	m_Projection = glm::perspective(glm::radians(45.0f), float(_windowWidth) / float(_windowHeight), 0.1f, 100.0f);
 
-	m_View = glm::lookAt(m_Position, m_Target, m_CameraUp);
+	
 }
 
 Camera::~Camera()
@@ -42,10 +42,33 @@ void Camera::Rotate(float _dt, float _angle, glm::vec3 _axis)
 void Camera::Update(float _dt)
 {
 
+	glm::vec3 rightVector = glm::normalize(glm::cross(m_CameraDirection, m_CameraUp));
+
 	//Use Event Manager to handle inputs
 
+	if (m_EventHandler->GetMoveRight())
+	{
+		m_Position += rightVector  * m_CameraSpeed * _dt;
+
+	}
+
+	if (m_EventHandler->GetMoveLeft())
+	{
+		m_Position += m_CameraDirection * m_CameraSpeed * _dt;
+	}
+
+	if (m_EventHandler->GetMoveForward())
+	{
+		m_Position += m_CameraDirection * m_CameraSpeed * _dt;
+	}
+
+	if (m_EventHandler->GetMoveBack())
+	{
+		m_Position -= m_CameraDirection * m_CameraSpeed * _dt;
+	}
 
 
+	m_View = glm::lookAt(m_Position, m_Position + m_CameraDirection, m_CameraUp);
 	
 	
 
@@ -61,12 +84,12 @@ void Camera::SetEventManager(std::shared_ptr<EventHandler> _eventHandler)
 	m_EventHandler = _eventHandler;
 }
 
-glm::mat4& Camera::GetProjection()
+glm::mat4 Camera::GetProjection()
 {
 	return m_Projection;
 }
 
-glm::mat4& Camera::GetView()
+glm::mat4 Camera::GetView()
 {
 	return m_View;
 }

@@ -4,9 +4,9 @@ GameObject::GameObject()
 {
 	m_Position = glm::vec3(0.0f, 0.0f, -20.0f);
 	m_Rotation = glm::vec3(0);
-	m_Velocity = glm::vec3(0);
+	
 
-	m_MoveSpeed = 0.5f;
+	m_MoveSpeed = 3.0f;
 
 }
 
@@ -30,23 +30,23 @@ void GameObject::Update(float _dt)
 
 	if (m_EventHandler->GetMoveRight())
 	{
-		m_Position += glm::vec3(1.0f, 0.0f, 0.0f) * _dt;
+		m_Position += glm::vec3(-1.0f, 0.0f, 0.0f) * m_MoveSpeed * _dt;
 		
 	}
 
 	if (m_EventHandler->GetMoveLeft())
 	{
-		m_Position += glm::vec3(-1.0f, 0.0f, 0.0f) * _dt;
+		m_Position += glm::vec3(1.0f, 0.0f, 0.0f) * m_MoveSpeed * _dt;
 	}
 
 	if (m_EventHandler->GetMoveForward())
 	{
-		m_Position += glm::vec3(0.0f, 0.0f, 1.0f) * _dt;
+		m_Position += glm::vec3(0.0f, 0.0f, 1.0f) * m_MoveSpeed * _dt;
 	}
 
 	if (m_EventHandler->GetMoveBack())
 	{
-		m_Position += glm::vec3(0.0f, 0.0f, -1.0f) * _dt;
+		m_Position += glm::vec3(0.0f, 0.0f, -1.0f) * m_MoveSpeed * _dt;
 	}
 
 

@@ -5,6 +5,8 @@
 #include "EventHandler.h"
 
 
+//https://learnopengl.com/Getting-started/Camera
+
 struct Camera
 {
 	Camera(int _windowWidth, int _windowHeight);
@@ -21,18 +23,22 @@ struct Camera
 
 	void SetEventManager(std::shared_ptr<EventHandler> _eventHandler);
 
-	glm::mat4& GetProjection();
-	glm::mat4& GetView();
+	glm::mat4 GetProjection();
+	glm::mat4 GetView();
 
 
 private:
 	glm::vec3 m_Position;
 	glm::vec3 m_Rotation;
 
+	float m_Pitch;
+	float m_Yaw;
+
 	glm::vec3 m_Target;
 	glm::vec3 m_CameraDirection;
 
 	glm::vec3 m_CameraUp;
+	float m_CameraSpeed = 3.0f;
 
 	glm::mat4 m_Projection;
 	glm::mat4 m_View;
