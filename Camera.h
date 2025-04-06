@@ -19,8 +19,6 @@ struct Camera
 	void SetPosition(float _x, float _y, float _z);
 	void SetPosition(glm::vec3 _pos);
 
-	void SetTarget(glm::vec3 _targetPos);
-
 	void SetEventManager(std::shared_ptr<EventHandler> _eventHandler);
 
 	glm::mat4 GetProjection();
@@ -31,10 +29,12 @@ private:
 	glm::vec3 m_Position;
 	glm::vec3 m_Rotation;
 
+	//horizontal axis
 	float m_Pitch;
+
+	//vertical axis
 	float m_Yaw;
 
-	glm::vec3 m_Target;
 	glm::vec3 m_CameraDirection;
 
 	glm::vec3 m_CameraUp;

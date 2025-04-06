@@ -14,6 +14,23 @@ void EventHandler::HandleEvents()
 				m_Exit = true;
 				break;
 
+			case SDL_MOUSEMOTION:
+				//https://gamedev.stackexchange.com/questions/139547/sdl2-mouse-camera-movement
+
+				m_MouseMotion = true;
+				if (!m_MouseFirst)
+				{
+					m_MouseRelX = event.motion.xrel;
+					m_MouseRelY = event.motion.yrel;
+				}
+				else
+				{
+					m_MouseFirst = false;
+					m_MouseRelX = 0;
+					m_MouseRelY = 0;
+				}
+				break;
+
 			case SDL_MOUSEBUTTONDOWN:
 				switch (event.button.button)
 				{
@@ -130,12 +147,19 @@ bool EventHandler::GetExit()
 	return m_Exit;
 }
 
-int EventHandler::GetMouseX()
+
+
+bool EventHandler::GetMouseMoving()
 {
-	return m_MouseX;
+	return m_MouseMotion;
 }
 
-int EventHandler::GetMouseY()
+int EventHandler::GetMouseRelX()
 {
-	return m_MouseY;
+	return m_MouseRelX;
+}
+
+int EventHandler::GetMouseRelY()
+{
+	return m_MouseRelY;
 }
