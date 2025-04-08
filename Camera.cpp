@@ -55,7 +55,7 @@ void Camera::Update(float _dt)
 	if (m_EventHandler->GetMouseMoving())
 	{
 		m_Yaw += m_EventHandler->GetMouseRelX() * 0.1;
-		m_Pitch += m_EventHandler->GetMouseRelY() * 0.1;
+		m_Pitch -= m_EventHandler->GetMouseRelY() * 0.1;
 	}
 	
 
@@ -88,7 +88,7 @@ void Camera::Update(float _dt)
 
 	if (m_EventHandler->GetMoveLeft())
 	{
-		m_Position += m_CameraDirection * m_CameraSpeed * _dt;
+		m_Position -= rightVector * m_CameraSpeed * _dt;
 	}
 
 	if (m_EventHandler->GetMoveForward())

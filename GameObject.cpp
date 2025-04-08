@@ -30,13 +30,13 @@ void GameObject::Update(float _dt)
 
 	if (m_EventHandler->GetMoveRight())
 	{
-		m_Position += glm::vec3(-1.0f, 0.0f, 0.0f) * m_MoveSpeed * _dt;
+		m_Position += glm::vec3(1.0f, 0.0f, 0.0f) * m_MoveSpeed * _dt;
 		
 	}
 
 	if (m_EventHandler->GetMoveLeft())
 	{
-		m_Position += glm::vec3(1.0f, 0.0f, 0.0f) * m_MoveSpeed * _dt;
+		m_Position += glm::vec3(-1.0f, 0.0f, 0.0f) * m_MoveSpeed * _dt;
 	}
 
 	if (m_EventHandler->GetMoveForward())
