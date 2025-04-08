@@ -16,12 +16,13 @@ void EventHandler::HandleEvents()
 
 			case SDL_MOUSEMOTION:
 				//https://gamedev.stackexchange.com/questions/139547/sdl2-mouse-camera-movement
-
+				SDL_SetRelativeMouseMode(SDL_TRUE);
 				m_MouseMotion = true;
+				/*m_MouseRelX = 0;
+				m_MouseRelY = 0;*/
 				if (!m_MouseFirst)
 				{
-					m_MouseRelX = event.motion.xrel;
-					m_MouseRelY = event.motion.yrel;
+					SDL_GetRelativeMouseState(&m_MouseRelX, &m_MouseRelY);
 				}
 				else
 				{
@@ -38,6 +39,10 @@ void EventHandler::HandleEvents()
 						m_Attack = true;
 						break;
 
+					
+					
+						
+						
 					default:
 						break;
 
@@ -47,8 +52,11 @@ void EventHandler::HandleEvents()
 			case SDL_MOUSEBUTTONUP:
 				switch (event.button.button)
 				{
-					case SDL_BUTTON_RIGHT:
+					case SDL_BUTTON_LEFT:
 						m_Attack = false;
+						break;
+					case SDL_BUTTON_RIGHT:
+						m_MouseMotion = false;
 						break;
 
 					default:

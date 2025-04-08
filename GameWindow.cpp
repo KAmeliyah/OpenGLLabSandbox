@@ -82,10 +82,10 @@ void GameWindow::Update(float _dt)
 
 	m_Camera->Update(_dt);
 
-	for (int i = 0; i < m_Objects.size(); i++)
+	/*for (int i = 0; i < m_Objects.size(); i++)
 	{
 		m_Objects.at(i)->Update(_dt);
-	}
+	}*/
 
 
 }

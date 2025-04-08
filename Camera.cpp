@@ -58,7 +58,7 @@ void Camera::Update(float _dt)
 		m_Pitch -= m_EventHandler->GetMouseRelY() * 0.1;
 	}
 	
-
+	//https://www.reddit.com/r/opengl/comments/bjzm38/third_person_camera_opengl/
 	if (m_Pitch > 89.0f)
 	{
 		m_Pitch = 89.0f;
@@ -77,13 +77,13 @@ void Camera::Update(float _dt)
 
 	//position
 	glm::vec3 rightVector = glm::normalize(glm::cross(m_CameraDirection, m_CameraUp));
-
+	
 	//Use Event Manager to handle inputs
 
 	if (m_EventHandler->GetMoveRight())
 	{
 		m_Position += rightVector  * m_CameraSpeed * _dt;
-
+		
 	}
 
 	if (m_EventHandler->GetMoveLeft())
