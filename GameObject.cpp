@@ -97,3 +97,8 @@ std::shared_ptr<Texture> GameObject::GetTexture() const
 {
 	return m_Texture;
 }
+
+glm::vec3 GameObject::GetPosition()
+{
+	return m_Position;
+}

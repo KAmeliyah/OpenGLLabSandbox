@@ -33,6 +33,8 @@ struct GameObject
 	std::shared_ptr<Model> GetModel() const;
 	std::shared_ptr<Texture> GetTexture() const;
 
+	glm::vec3 GetPosition();
+
 
 private:
 
@@ -47,9 +49,6 @@ private:
 
 	glm::vec3 m_Position;
 	glm::vec3 m_Rotation;
-
-	
-	
 
 	float m_MoveSpeed;
 

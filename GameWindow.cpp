@@ -33,7 +33,7 @@ GameWindow::GameWindow()
 	m_EventManager = std::make_shared<EventHandler>();
 
 	//Set up main camera
-	m_Camera = std::make_shared<Camera>(m_WindowWidth, m_WindowHeight);
+	m_Camera = std::make_shared<IndependentCamera>(m_WindowWidth, m_WindowHeight);
 	m_Camera->SetEventManager(m_EventManager);
 	
 	std::shared_ptr<GameObject> m_Player = std::make_shared<GameObject>("curuthers/curuthers.obj", "curuthers/Whiskers_diffuse.png");
@@ -80,13 +80,13 @@ void GameWindow::Update(float _dt)
 {
 	//Apply movement
 
-	m_Camera->Update(_dt);
-
-	/*for (int i = 0; i < m_Objects.size(); i++)
+	
+	
+	for (int i = 0; i < m_Objects.size(); i++)
 	{
 		m_Objects.at(i)->Update(_dt);
-	}*/
-
+	}
+	m_Camera->Update(_dt);
 
 }
 
@@ -100,7 +100,7 @@ void GameWindow::Draw(float _dt)
 	glEnable(GL_DEPTH_TEST);
 
 	//GameObject in vector's vertex count
-
+	m_Specular->SetUniform("u_CameraPos", m_Camera->GetPosition());
 	m_Specular->SetUniform("u_Projection", m_Camera->GetProjection());
 	m_Specular->SetUniform("u_View", m_Camera->GetView());
 

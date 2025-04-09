@@ -18,18 +18,9 @@ void EventHandler::HandleEvents()
 				//https://gamedev.stackexchange.com/questions/139547/sdl2-mouse-camera-movement
 				SDL_SetRelativeMouseMode(SDL_TRUE);
 				m_MouseMotion = true;
-				/*m_MouseRelX = 0;
-				m_MouseRelY = 0;*/
-				if (!m_MouseFirst)
-				{
-					SDL_GetRelativeMouseState(&m_MouseRelX, &m_MouseRelY);
-				}
-				else
-				{
-					m_MouseFirst = false;
-					m_MouseRelX = 0;
-					m_MouseRelY = 0;
-				}
+				SDL_GetMouseState(&m_MouseRelX, &m_MouseRelY);
+				//SDL_SetRelativeMouseMode(SDL_FALSE);
+
 				break;
 
 			case SDL_MOUSEBUTTONDOWN:
@@ -39,10 +30,6 @@ void EventHandler::HandleEvents()
 						m_Attack = true;
 						break;
 
-					
-					
-						
-						
 					default:
 						break;
 
@@ -82,6 +69,10 @@ void EventHandler::HandleEvents()
 				
 					case SDLK_a:
 						m_MoveLeft = true;
+						break;
+
+					case SDLK_ESCAPE:
+						m_Exit = true;
 						break;
 
 					default:
@@ -162,12 +153,12 @@ bool EventHandler::GetMouseMoving()
 	return m_MouseMotion;
 }
 
-int EventHandler::GetMouseRelX()
+int EventHandler::GetMouseX()
 {
 	return m_MouseRelX;
 }
 
-int EventHandler::GetMouseRelY()
+int EventHandler::GetMouseY()
 {
 	return m_MouseRelY;
 }

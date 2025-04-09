@@ -10,8 +10,8 @@ struct EventHandler
 	void HandleEvents();
 
 	bool GetMouseMoving();
-	int GetMouseRelX();
-	int GetMouseRelY();
+	int GetMouseX();
+	int GetMouseY();
 
 	bool GetMoveRight();
 	bool GetMoveLeft();
@@ -28,7 +28,7 @@ struct EventHandler
 private:
 	SDL_Event event{ 0 };
 
-	bool m_MouseFirst{ true };
+	
 	bool m_MouseMotion{ false };
 	int m_MouseRelX{ 0 };
 	int m_MouseRelY{ 0 };

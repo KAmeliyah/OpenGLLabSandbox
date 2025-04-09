@@ -8,7 +8,7 @@
 
 #include "EventHandler.h"
 #include "GameObject.h"
-#include "Camera.h"
+#include "IndependentCamera.h"
 #include "ShaderProgram.h"
 
 #define WINDOW_WIDTH 800
