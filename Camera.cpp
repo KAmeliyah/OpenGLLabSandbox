@@ -30,9 +30,6 @@ Camera::~Camera()
 }
 
 
-
-
-
 void Camera::SetEventManager(std::shared_ptr<EventHandler> _eventHandler)
 {
 	m_EventHandler = _eventHandler;

@@ -32,13 +32,16 @@ GameWindow::GameWindow()
 	//set up event handler
 	m_EventManager = std::make_shared<EventHandler>();
 
-	//Set up main camera
-	m_Camera = std::make_shared<IndependentCamera>(m_WindowWidth, m_WindowHeight);
-	m_Camera->SetEventManager(m_EventManager);
+	
 	
 	std::shared_ptr<GameObject> m_Player = std::make_shared<GameObject>("curuthers/curuthers.obj", "curuthers/Whiskers_diffuse.png");
 	m_Player->SetEventManager(m_EventManager);
 	m_Objects.push_back(m_Player);
+
+	//Set up main camera
+	m_Camera = std::make_shared<TrackCamera>(m_WindowWidth, m_WindowHeight);
+	m_Camera->SetEventManager(m_EventManager);
+	m_Camera->SetTarget(m_Player);
 
 	m_Specular = std::make_shared<ShaderProgram>("VertexShader.v", "SpecularFragmentShader.f");
 

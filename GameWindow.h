@@ -9,6 +9,7 @@
 #include "EventHandler.h"
 #include "GameObject.h"
 #include "IndependentCamera.h"
+#include "TrackCamera.h"
 #include "ShaderProgram.h"
 
 #define WINDOW_WIDTH 800
@@ -44,7 +45,7 @@ private:
 
 	std::shared_ptr<EventHandler> m_EventManager;
 
-	std::shared_ptr<Camera> m_Camera;
+	std::shared_ptr<TrackCamera> m_Camera;
 
 	//For later, when there is multiple cameras
 	std::vector<std::shared_ptr<Camera>> m_SceneCameras;

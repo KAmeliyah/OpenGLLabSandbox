@@ -31,22 +31,25 @@ void GameObject::Update(float _dt)
 	if (m_EventHandler->GetMoveRight())
 	{
 		m_Position += glm::vec3(1.0f, 0.0f, 0.0f) * m_MoveSpeed * _dt;
-		
+		std::cout << "Cat is moving right" << std::endl;
 	}
 
 	if (m_EventHandler->GetMoveLeft())
 	{
 		m_Position += glm::vec3(-1.0f, 0.0f, 0.0f) * m_MoveSpeed * _dt;
+		std::cout << "Cat is moving left" << std::endl;
 	}
 
 	if (m_EventHandler->GetMoveForward())
 	{
 		m_Position += glm::vec3(0.0f, 0.0f, 1.0f) * m_MoveSpeed * _dt;
+		std::cout << "Cat is moving forward" << std::endl;
 	}
 
 	if (m_EventHandler->GetMoveBack())
 	{
 		m_Position += glm::vec3(0.0f, 0.0f, -1.0f) * m_MoveSpeed * _dt;
+		std::cout << "Cat is moving back" << std::endl;
 	}
 
 

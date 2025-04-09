@@ -15,7 +15,7 @@ void IndependentCamera::Update(float _dt)
 
 	//rotation
 
-
+	//https://stackoverflow.com/questions/70843389/sdl2-mouse-capture
 	//https://gamedev.stackexchange.com/questions/139547/sdl2-mouse-camera-movement
 
 	if (m_EventHandler->GetMouseMoving())

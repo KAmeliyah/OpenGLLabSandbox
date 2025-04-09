@@ -34,6 +34,7 @@ struct GameObject
 	std::shared_ptr<Texture> GetTexture() const;
 
 	glm::vec3 GetPosition();
+	//glm::vec3 GetRotation();
 
 
 private:
