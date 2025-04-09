@@ -12,6 +12,7 @@ uniform vec3 u_CameraPos;
 varying vec3 v_Normal;
 varying vec3 v_FragPos;
 varying vec3 v_ViewPos;
+varying vec3 v_LightPos;
                                        
 void main()                            
 {                                      
@@ -20,5 +21,6 @@ void main()
 	v_Normal = mat3(u_Model) * a_Normal;
 	v_FragPos = vec3(u_Model * vec4(a_Position, 1.0));
 	v_ViewPos = u_CameraPos;
+
 	
 }

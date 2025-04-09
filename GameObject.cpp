@@ -53,7 +53,7 @@ void GameObject::Update(float _dt)
 	}
 
 
-
+	m_Rotation.x += 1;
 
 }
 
@@ -68,7 +68,7 @@ void GameObject::Draw(float _dt, std::shared_ptr<ShaderProgram> _shader)
 	glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), m_Position);
 
 	
-	//modelMatrix = glm::rotate(modelMatrix, glm::radians(m_Rotation.x), glm::vec3(0, 1, 0));
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(m_Rotation.x), glm::vec3(0, 1, 0));
 
 	
 

@@ -7,7 +7,7 @@ varying vec3 v_ViewPos;
 void main()               
 {
 
-	vec3 lightPos = vec3(10,10,10);
+	vec3 lightPos = vec3(10,10,-5);
 	vec3 diffuseColor = vec3(1,1,1);
 	vec3 specularColor = vec3(1,1,1);
 
