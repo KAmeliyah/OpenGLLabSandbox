@@ -38,6 +38,11 @@ GameWindow::GameWindow()
 	m_Player->SetEventManager(m_EventManager);
 	m_Objects.push_back(m_Player);
 
+
+	m_Placeholder = std::make_shared<GameObject>("curuthers/curuthers.obj", "curuthers/Whiskers_diffuse.png");
+	m_Placeholder->SetPosition(glm::vec3(10, 0, -20));
+
+
 	//Set up main camera
 	m_Camera = std::make_shared<TrackCamera>(m_WindowWidth, m_WindowHeight);
 	m_Camera->SetEventManager(m_EventManager);
@@ -83,13 +88,13 @@ void GameWindow::Update(float _dt)
 {
 	//Apply movement
 
-	
+	m_Camera->Update(_dt);
 	
 	for (int i = 0; i < m_Objects.size(); i++)
 	{
 		m_Objects.at(i)->Update(_dt);
 	}
-	m_Camera->Update(_dt);
+	
 
 }
 
@@ -111,6 +116,8 @@ void GameWindow::Draw(float _dt)
 	{
 		m_Objects.at(i)->Draw(_dt,m_Specular);
 	}
+
+	m_Placeholder->Draw(_dt, m_Specular);
 
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);

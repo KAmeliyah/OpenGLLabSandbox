@@ -47,6 +47,8 @@ private:
 
 	std::shared_ptr<TrackCamera> m_Camera;
 
+	std::shared_ptr<GameObject> m_Placeholder;
+
 	//For later, when there is multiple cameras
 	std::vector<std::shared_ptr<Camera>> m_SceneCameras;
 

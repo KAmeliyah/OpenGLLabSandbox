@@ -28,13 +28,15 @@ struct GameObject
 
 	void SetEventManager(std::shared_ptr<EventHandler> _eventHandler);
 
+	void SetPosition(glm::vec3 _pos) { m_Position = _pos; }
+
 
 	//Make copy so underlying object can be modified safely
 	std::shared_ptr<Model> GetModel() const;
 	std::shared_ptr<Texture> GetTexture() const;
 
 	glm::vec3 GetPosition();
-	//glm::vec3 GetRotation();
+	glm::vec3 GetRotation();
 
 
 private:

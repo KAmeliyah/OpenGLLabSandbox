@@ -29,9 +29,11 @@ struct Camera
 protected:
 	glm::vec3 m_Position;
 	
-	//horizontal axis
-	float m_Pitch;
 	//vertical axis
+	float m_Pitch;
+
+
+	//horizontal axis
 	float m_Yaw;
 
 

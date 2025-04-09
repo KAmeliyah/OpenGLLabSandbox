@@ -16,7 +16,7 @@ GameObject::GameObject(const std::string& _modelPath, const std::string& _textur
 	m_Model = std::make_shared<Model>(_modelPath);
 	m_Texture = std::make_shared<Texture>(_texturePath);
 	m_Position = glm::vec3(0.0f, 0.0f, -20.0f);
-	m_Rotation = glm::vec3(0);
+	m_Rotation = glm::vec3(0.0f,0.0f,0.0f);
 
 	m_MoveSpeed = 3.0f;
 }
@@ -53,7 +53,7 @@ void GameObject::Update(float _dt)
 	}
 
 
-	
+
 
 }
 
@@ -66,9 +66,11 @@ void GameObject::Draw(float _dt, std::shared_ptr<ShaderProgram> _shader)
 	
 
 	glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), m_Position);
-	//modelMatrix = glm::rotate(modelMatrix, glm::radians(m_Rotation.z), glm::vec3(0, 1, 0));
 
-	//m_Rotation.z += 1;
+	
+	//modelMatrix = glm::rotate(modelMatrix, glm::radians(m_Rotation.x), glm::vec3(0, 1, 0));
+
+	
 
 	_shader->SetUniform("u_Model", modelMatrix);
 
@@ -104,4 +106,9 @@ std::shared_ptr<Texture> GameObject::GetTexture() const
 glm::vec3 GameObject::GetPosition()
 {
 	return m_Position;
+}
+
+glm::vec3 GameObject::GetRotation()
+{
+	return m_Rotation;
 }
