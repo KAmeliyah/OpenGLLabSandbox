@@ -21,11 +21,11 @@ Cubemap::~Cubemap()
 
 void Cubemap::Draw(std::shared_ptr<ShaderProgram> _shader)
 {
-
+	
 	glBindVertexArray(m_Model->vao_id());
-	glBindTexture(GL_TEXTURE_CUBE_MAP, m_Texture->id());
+	glBindTexture(GL_TEXTURE_CUBE_MAP, m_Texture->id(6));
 
-	//_shader is bound in hte draw function where this is called
+	
 
 	glDrawArrays(GL_TRIANGLES, 0, m_Model->vertex_count());
 	glBindVertexArray(0);

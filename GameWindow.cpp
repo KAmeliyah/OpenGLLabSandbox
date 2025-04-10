@@ -17,12 +17,16 @@ GameWindow::GameWindow()
 	}
 
 
+
+
 	//can't init glew without connection to graphics card
 	//Glew loads OpenGL and extensions at runtime
 	if (glewInit() != GLEW_OK)
 	{
 		throw std::runtime_error("Failed to initialise glew");
 	}
+
+	std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
 
 	m_WindowWidth = WINDOW_WIDTH;
 	m_WindowHeight = WINDOW_HEIGHT;
@@ -45,6 +49,16 @@ GameWindow::GameWindow()
 	m_Camera = std::make_shared<TrackCamera>(m_WindowWidth, m_WindowHeight);
 	m_Camera->SetEventManager(m_EventManager);
 	m_Camera->SetTarget(m_Player);
+
+	std::vector<std::string> pathsForFaces = {
+		"assets/skybox/posx.jpg",
+		"assets/skybox/negx.jpg",
+		"assets/skybox/posy.jpg",
+		"assets/skybox/negy.jpg",
+		"assets/skybox/posz.jpg",
+		"assets/skybox/negz.jpg" };
+
+	m_Skybox = std::make_shared<Cubemap>("assets/primitives/cube.obj", pathsForFaces);
 
 	m_Specular = std::make_shared<ShaderProgram>("VertexShader.v", "SpecularFragmentShader.f");
 
@@ -102,7 +116,8 @@ void GameWindow::Draw(float _dt)
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
+
+
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 
@@ -131,9 +146,18 @@ void GameWindow::Draw(float _dt)
 
 	//Remove translation but keep rotation
 
-	//glm::mat4 view = glm::mat4(glm::mat3(m_Camera->GetView()));
-	//m_SkyboxShader->SetUniform("u_View", view);
-	//m_SkyboxShader->SetUniform("u_Projection", m_Camera->GetProjection());
+	//glDepthFunc(GL_LEQUAL);
+	//
+
+	glm::mat4 view = glm::mat4(glm::mat3(m_Camera->GetView()));
+
+	//These call glUseProgram(skyboxshader)
+	m_SkyboxShader->SetUniform("u_View", view);
+	m_SkyboxShader->SetUniform("u_Projection", m_Camera->GetProjection());
+
+	m_Skybox->Draw(m_SkyboxShader);
+
+	//glDepthFunc(GL_LESS);
 
 
 	SDL_GL_SwapWindow(m_Window);

@@ -11,6 +11,7 @@
 #include "IndependentCamera.h"
 #include "TrackCamera.h"
 #include "ShaderProgram.h"
+#include "Cubemap.h"
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
@@ -53,6 +54,10 @@ private:
 
 	//For later, when there is multiple cameras
 	std::vector<std::shared_ptr<Camera>> m_SceneCameras;
+
+	std::shared_ptr<Cubemap> m_Skybox;
+
+
 
 	bool m_Quit{ false };
 

@@ -157,5 +157,5 @@ void ShaderProgram::SetUniform(std::string _uniform, Texture* _texture)
 
 GLuint ShaderProgram::GetId()
 {
-	return GLuint();
+	return m_Id;
 }
