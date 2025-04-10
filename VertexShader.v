@@ -12,7 +12,7 @@ uniform vec3 u_CameraPos;
 varying vec3 v_Normal;
 varying vec3 v_FragPos;
 varying vec3 v_ViewPos;
-varying vec3 v_LightPos;
+
                                        
 void main()                            
 {                                      

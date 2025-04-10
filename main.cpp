@@ -21,6 +21,7 @@ int main()
 	
 
 	std::shared_ptr<GameWindow> game = std::make_shared<GameWindow>();
+	SDL_SetRelativeMouseMode(SDL_TRUE);
 
 	
 	float dt = 1.0f / 60.0f;

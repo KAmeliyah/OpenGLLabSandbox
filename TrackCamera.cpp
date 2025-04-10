@@ -23,29 +23,21 @@ void TrackCamera::Update(float _dt)
 	//it should also rotate to be in front of the target.
 
 	glm::vec3 targetRotation = m_Target->GetRotation();
-	
-
 
 	glm::vec3 direction;
 	direction.x = sin(glm::radians(targetRotation.x));
 	direction.y = 0.0f;
 	direction.z = cos(glm::radians(targetRotation.x));
 
-	glm::vec3 positionOffset = glm::normalize(direction) * 30.0f;
+	glm::vec3 positionOffset = glm::normalize(direction) * 20.0f;
 
-	m_Position = m_Target->GetPosition() + positionOffset;
+	m_Position = m_Target->GetPosition() - positionOffset + glm::vec3(0,8,0);
 
-
-	//m_CameraDirection = glm::normalize(m_Target->GetPosition() - m_Position);
-	
-
-	
-	//m_CameraDirection = glm::normalize(direction);
 
 	//Convert euler rotation to a rotation matrix so it can be used with the view matrix
+	glm::vec3 camTarget = m_Target->GetPosition() + glm::vec3(0, 3, 0);
 
-
-	m_View = glm::lookAt(m_Position,m_Target->GetPosition(), m_CameraUp);
+	m_View = glm::lookAt(m_Position,camTarget, m_CameraUp);
 	
 	//combine position and rotation
 

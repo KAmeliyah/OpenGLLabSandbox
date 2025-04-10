@@ -49,10 +49,14 @@ private:
 
 	std::shared_ptr<EventHandler> m_EventHandler{ nullptr };
 
-
 	glm::vec3 m_Position;
+
+	//Use to find the forward direction
 	glm::vec3 m_Rotation;
 
+
+	float m_LastMouseX;
+	float m_LastMouseY;
 	float m_MoveSpeed;
 
 

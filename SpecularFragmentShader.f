@@ -1,13 +1,17 @@
 uniform sampler2D u_Texture;
+
+
 varying vec2 v_TexCoord;
 varying vec3 v_Normal;
 varying vec3 v_FragPos;
 varying vec3 v_ViewPos;
+
+
                         
 void main()               
 {
 
-	vec3 lightPos = vec3(10,10,-5);
+	vec3 lightPos = vec3(10,10,-50);
 	vec3 diffuseColor = vec3(1,1,1);
 	vec3 specularColor = vec3(1,1,1);
 

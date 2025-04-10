@@ -107,11 +107,12 @@ void GameWindow::Draw(float _dt)
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 
-	
 	m_Specular->SetUniform("u_CameraPos", m_Camera->GetPosition());
 	m_Specular->SetUniform("u_Projection", m_Camera->GetProjection());
 	m_Specular->SetUniform("u_View", m_Camera->GetView());
-	m_Specular->SetUniform("u_LightPos", m_Camera->GetPosition() + glm::vec3(0.0f, 5.0f, 0.0f));
+	
+
+
 
 	for (int i = 0; i < m_Objects.size(); i++)
 	{
