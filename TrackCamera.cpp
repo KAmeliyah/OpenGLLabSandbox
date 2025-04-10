@@ -17,13 +17,14 @@ void TrackCamera::Update(float _dt)
 
 	//https://community.khronos.org/t/camera-that-follows-object-rotations/106743
 	
-	//Modify this to be behind the cat and to involve rotation
 
-	//This camera should follow in front of the target. It should follow it when it moves and when it rotates
-	//it should also rotate to be in front of the target.
+
+	//This camera should follow behind the target. It should follow it when it moves and when it rotates
+	//it should also rotate to be behind the target.
 
 	glm::vec3 targetRotation = m_Target->GetRotation();
 
+	//No movement on the y direction for now
 	glm::vec3 direction;
 	direction.x = sin(glm::radians(targetRotation.x));
 	direction.y = 0.0f;
@@ -34,12 +35,11 @@ void TrackCamera::Update(float _dt)
 	m_Position = m_Target->GetPosition() - positionOffset + glm::vec3(0,8,0);
 
 
-	//Convert euler rotation to a rotation matrix so it can be used with the view matrix
 	glm::vec3 camTarget = m_Target->GetPosition() + glm::vec3(0, 3, 0);
 
 	m_View = glm::lookAt(m_Position,camTarget, m_CameraUp);
 	
-	//combine position and rotation
+	
 
 
 

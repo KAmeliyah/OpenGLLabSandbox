@@ -16,9 +16,10 @@ GameObject::GameObject(const std::string& _modelPath, const std::string& _textur
 	m_Model = std::make_shared<Model>(_modelPath);
 	m_Texture = std::make_shared<Texture>(_texturePath);
 	m_Position = glm::vec3(0.0f, 0.0f, -20.0f);
-	m_Rotation = glm::vec3(180.0f,0.0f,0.0f);
+	m_Rotation = glm::vec3(0.0f,0.0f,0.0f);
 
 	m_MoveSpeed = 3.0f;
+
 }
 
 GameObject::~GameObject()
@@ -32,15 +33,11 @@ void GameObject::Update(float _dt)
 
 	if (m_EventHandler->GetMouseMoving())
 	{
-
-		std::cout << "Mouse Moving" << std::endl;
-		
 		
 		m_Rotation.x -= m_EventHandler->GetMouseX() * 0.1f;
-		
-
 
 	}
+
 
 	float yawRadians = glm::radians(m_Rotation.x);
 
@@ -53,25 +50,25 @@ void GameObject::Update(float _dt)
 	if (m_EventHandler->GetMoveRight())
 	{
 		m_Position += rightVector * m_MoveSpeed * _dt;
-		std::cout << "Cat is moving right" << std::endl;
+		
 	}
 
 	if (m_EventHandler->GetMoveLeft())
 	{
 		m_Position -= rightVector * m_MoveSpeed * _dt;
-		std::cout << "Cat is moving left" << std::endl;
+		
 	}
 
 	if (m_EventHandler->GetMoveForward())
 	{
 		m_Position += forward * m_MoveSpeed * _dt;
-		std::cout << "Cat is moving forward" << std::endl;
+		
 	}
 
 	if (m_EventHandler->GetMoveBack())
 	{
 		m_Position -= forward * m_MoveSpeed * _dt;
-		std::cout << "Cat is moving back" << std::endl;
+		
 	}
 
 
@@ -105,10 +102,6 @@ void GameObject::Draw(float _dt, std::shared_ptr<ShaderProgram> _shader)
 
 }
 
-void GameObject::SetShader(std::shared_ptr<ShaderProgram> _shader)
-{
-	m_Shader = _shader;
-}
 
 void GameObject::SetEventManager(std::shared_ptr<EventHandler> _eventHandler)
 {

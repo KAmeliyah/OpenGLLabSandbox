@@ -3,8 +3,6 @@
 GameWindow::GameWindow()
 {
 
-	
-
 	m_Window = SDL_CreateWindow("Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 		WINDOW_WIDTH, WINDOW_HEIGHT,
 		SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
@@ -50,6 +48,7 @@ GameWindow::GameWindow()
 
 	m_Specular = std::make_shared<ShaderProgram>("VertexShader.v", "SpecularFragmentShader.f");
 
+	m_SkyboxShader = std::make_shared<ShaderProgram>("Skybox.v", "Skybox.f");
 
 }
 
@@ -121,10 +120,20 @@ void GameWindow::Draw(float _dt)
 
 	m_Placeholder->Draw(_dt, m_Specular);
 
+
+
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
 
-	
+	//Depth stuff is disabled so draw the skybox
+
+	//Use skybox shader
+
+	//Remove translation but keep rotation
+
+	//glm::mat4 view = glm::mat4(glm::mat3(m_Camera->GetView()));
+	//m_SkyboxShader->SetUniform("u_View", view);
+	//m_SkyboxShader->SetUniform("u_Projection", m_Camera->GetProjection());
 
 
 	SDL_GL_SwapWindow(m_Window);

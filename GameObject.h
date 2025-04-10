@@ -13,6 +13,8 @@
 struct GameObject
 {
 
+	//this could be made into a base class
+
 	GameObject();
 
 	GameObject(const std::string& _modelPath, const std::string& _texturePath);
@@ -24,7 +26,7 @@ struct GameObject
 
 	void Draw(float _dt, std::shared_ptr<ShaderProgram> _shader);
 
-	void SetShader(std::shared_ptr<ShaderProgram> _shader);
+	
 
 	void SetEventManager(std::shared_ptr<EventHandler> _eventHandler);
 
@@ -45,7 +47,6 @@ private:
 
 	std::shared_ptr<Texture> m_Texture{ nullptr };
 
-	std::shared_ptr<ShaderProgram> m_Shader{ nullptr };
 
 	std::shared_ptr<EventHandler> m_EventHandler{ nullptr };
 

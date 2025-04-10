@@ -41,6 +41,8 @@ private:
 
 	std::shared_ptr<ShaderProgram> m_Specular;
 
+	std::shared_ptr<ShaderProgram> m_SkyboxShader;
+
 	std::vector<std::shared_ptr<GameObject>> m_Objects;
 
 	std::shared_ptr<EventHandler> m_EventManager;

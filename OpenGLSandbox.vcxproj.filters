@@ -45,6 +45,9 @@
     <ClCompile Include="IndependentCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Cubemap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Texture.h">
@@ -77,6 +80,9 @@
     <ClInclude Include="IndependentCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Cubemap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.v">
@@ -86,6 +92,12 @@
       <Filter>Source Files\Resource Files</Filter>
     </None>
     <None Include="SpecularFragmentShader.f">
+      <Filter>Source Files\Resource Files</Filter>
+    </None>
+    <None Include="Skybox.f">
+      <Filter>Source Files\Resource Files</Filter>
+    </None>
+    <None Include="Skybox.v">
       <Filter>Source Files\Resource Files</Filter>
     </None>
   </ItemGroup>

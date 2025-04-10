@@ -21,6 +21,35 @@ Texture::Texture(const std::string& _path)
 
 }
 
+Texture::Texture(const std::vector<std::string>& _facePaths)
+{
+
+	for (int i = 0; i < _facePaths.size(); i++)
+	{
+
+		//All the faces are the same size so storing the size of one face is enough
+		unsigned char* data = stbi_load(_facePaths[i].c_str(), &m_Size.x, &m_Size.y, NULL, 4);
+		if (!data)
+		{
+			throw std::runtime_error("Couldn't load the image: " + _facePaths[i]);
+
+		}
+
+		for (int j = 0; j< m_Size.x * m_Size.y * 4; j++)
+		{
+			m_Data.push_back(data[j]);
+		}
+
+		free(data);
+
+	}
+
+	m_Dirty = true;
+	m_Id = 0;
+
+	
+}
+
 Texture::Texture(glm::ivec2 _size): m_Dirty(true), m_Id(0), m_Size(_size)
 {
 	//preallocate space
@@ -28,15 +57,6 @@ Texture::Texture(glm::ivec2 _size): m_Dirty(true), m_Id(0), m_Size(_size)
 
 }
 
-//Texture::Texture(const Texture& _copy)
-//{
-//
-//}
-//
-//Texture& Texture::operator=(const Texture& _assign)
-//{
-//	
-//}
 
 Texture::~Texture()
 {
@@ -59,10 +79,9 @@ glm::ivec2 Texture::GetSize() const
 
 void Texture::load(const std::string& _path)
 {
-	int w = 0;
-	int h = 0;
+	
 
-	//why use a car when a bicycle does the trick
+	
 	unsigned char* data = stbi_load(_path.c_str(), &m_Size.x, &m_Size.y, NULL, 4);
 	if (!data)
 	{
@@ -76,6 +95,32 @@ void Texture::load(const std::string& _path)
 	}
 
 	free(data);
+	m_Dirty = true;
+	m_Id = 0;
+}
+
+void Texture::load(const std::vector<std::string>& _facePaths)
+{
+	for (int i = 0; i < _facePaths.size(); i++)
+	{
+
+		//All the faces are the same size so storing the size of one face is enough
+		unsigned char* data = stbi_load(_facePaths[i].c_str(), &m_Size.x, &m_Size.y, NULL, 4);
+		if (!data)
+		{
+			throw std::runtime_error("Couldn't load the image: " + _facePaths[i]);
+
+		}
+
+		for (int j = 0; j < m_Size.x * m_Size.y * 4; j++)
+		{
+			m_Data.push_back(data[j]);
+		}
+
+		free(data);
+
+	}
+
 	m_Dirty = true;
 	m_Id = 0;
 }
@@ -137,4 +182,48 @@ GLuint Texture::id()
 
 
 	return m_Id;
+}
+
+GLuint Texture::id(int _faces)
+{
+	if (!m_Id)
+	{
+		glGenTextures(1, &m_Id);
+
+		if (!m_Id)
+		{
+			throw std::runtime_error("Couldn't create the texture");
+		}
+
+	}
+
+
+	if (m_Dirty)
+	{
+		glBindTexture(GL_TEXTURE_CUBE_MAP, m_Id);
+
+		//upload the image data to the bound texture unit in the GPU
+
+		for (int i = 0; i < _faces; i++)
+		{
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, m_Size.x, m_Size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_Data.data());
+		}
+
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+		
+
+		glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+	
+
+		m_Dirty = false;
+	}
+
+
+
+	return GLuint();
 }
