@@ -22,8 +22,17 @@ Cubemap::~Cubemap()
 void Cubemap::Draw(std::shared_ptr<ShaderProgram> _shader)
 {
 	
+
+	
+
 	//glUseProgram(_shader->GetId());
+
+
+
 	glBindVertexArray(m_Model->vao_id());
+	
+
+
 
 	//glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, m_Texture->id(6));

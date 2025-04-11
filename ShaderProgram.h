@@ -16,6 +16,8 @@ struct ShaderProgram
 	
 	void LoadProgram(const std::string _vertPath,const std::string _fragPath);
 
+	void Use();
+
 	//Matrix upload
 	void SetUniform(std::string _uniform, glm::mat4 _value);
 
@@ -29,7 +31,7 @@ struct ShaderProgram
 
 	void SetUniform(std::string _uniform, Texture* _texture);
 
-	GLuint GetId();
+	GLuint GetId() const;
 
 private:
 	GLuint m_Id;

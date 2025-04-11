@@ -114,15 +114,31 @@ void GameWindow::Update(float _dt)
 void GameWindow::Draw(float _dt)
 {
 
+	GLenum framebufferStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	if (framebufferStatus != GL_FRAMEBUFFER_COMPLETE) {
+		std::cout << "Framebuffer not complete! Error: " << framebufferStatus << std::endl;
+	}
+
+
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_DEPTH_TEST);
-	
 
+	glEnable(GL_CULL_FACE);
+
+
+
+	glEnable(GL_DEPTH_TEST);
+
+	m_Specular->Use();
 	m_Specular->SetUniform("u_CameraPos", m_Camera->GetPosition());
+	GLenum bindErr = glGetError();
+	if (bindErr != GL_NO_ERROR) {
+		std::cout << "OpenGL Error (setting camera position uniform): " << bindErr << std::endl;
+	}
+
+
 	m_Specular->SetUniform("u_Projection", m_Camera->GetProjection());
 	m_Specular->SetUniform("u_View", m_Camera->GetView());
 	
@@ -136,7 +152,7 @@ void GameWindow::Draw(float _dt)
 
 	m_Placeholder->Draw(_dt, m_Specular);
 
-	
+
 
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
@@ -150,6 +166,8 @@ void GameWindow::Draw(float _dt)
 
 	//These call glUseProgram(skyboxshader)
 	m_SkyboxShader->SetUniform("u_View", view);
+
+
 	m_SkyboxShader->SetUniform("u_Projection", m_Camera->GetProjection());
 
 	m_Skybox->Draw(m_SkyboxShader);

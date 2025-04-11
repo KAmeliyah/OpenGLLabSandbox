@@ -197,6 +197,8 @@ GLuint Texture::id(int _faces)
 	if (!m_Id)
 	{
 		glGenTextures(1, &m_Id);
+		/*std::cout << "Created texture" << std::endl;
+		std::cout << m_Id << std::endl;*/
 
 		if (!m_Id)
 		{
@@ -208,19 +210,24 @@ GLuint Texture::id(int _faces)
 	if (m_Dirty)
 	{
 
-
+		std::cout << m_Id << std::endl;
 		glBindTexture(GL_TEXTURE_CUBE_MAP, m_Id);
+	
 
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		//GLenum bindErr = glGetError();
+		//if (bindErr != GL_NO_ERROR) {
+		//	std::cout << "OpenGL Error (after binding texture): " << bindErr << std::endl;
+		//}
 
-		
-
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	
 
 		//upload the image data to the bound texture unit in the GPU
+
+		GLenum faceTargets[6] = {
+		GL_TEXTURE_CUBE_MAP_POSITIVE_X, GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
+		GL_TEXTURE_CUBE_MAP_POSITIVE_Y, GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
+		GL_TEXTURE_CUBE_MAP_POSITIVE_Z, GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
+		};
 
 		int faceSize = m_Size.x * m_Size.y * m_Channels;
 		//std::cout << faceSize << std::endl;
@@ -230,17 +237,25 @@ GLuint Texture::id(int _faces)
 			const void* faceData = m_Data.data() + i * faceSize;
 			//std::cout << faceData << std::endl;
 
-			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, m_Size.x, m_Size.y, 0, GL_RGB, GL_UNSIGNED_BYTE, faceData);
+			glTexImage2D(faceTargets[i], 0, GL_RGB, m_Size.x, m_Size.y, 0, GL_RGB, GL_UNSIGNED_BYTE, faceData);
 
-			/*GLenum err = glGetError();
+			//GLenum err = glGetError();
 
-			if (err != GL_NO_ERROR)
+			/*if (err != GL_NO_ERROR)
 			{
+				std::cout << i << std::endl;
 				std::cout << "OpenGL Error: " << err << std::endl;
 			}*/
 
 			
 		}
+
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 		glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 	
