@@ -38,6 +38,7 @@ private:
 	bool m_Dirty;
 	std::vector<unsigned char> m_Data;
 	glm::ivec2 m_Size;
+	int m_Channels{ 0 };
 	GLuint m_Id;
 
 };

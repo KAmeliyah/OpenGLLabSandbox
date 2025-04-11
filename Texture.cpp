@@ -28,19 +28,20 @@ Texture::Texture(const std::vector<std::string>& _facePaths)
 	{
 
 		//All the faces are the same size so storing the size of one face is enough
-		unsigned char* data = stbi_load(_facePaths[i].c_str(), &m_Size.x, &m_Size.y, NULL, 4);
+		unsigned char* data = stbi_load(_facePaths[i].c_str(), &m_Size.x, &m_Size.y, &m_Channels, 0);
+
 		if (!data)
 		{
 			throw std::runtime_error("Couldn't load the image: " + _facePaths[i]);
 
 		}
 
-		for (int j = 0; j< m_Size.x * m_Size.y * 4; j++)
+		for (int j = 0; j < m_Size.x * m_Size.y * m_Channels; j++)
 		{
 			m_Data.push_back(data[j]);
 		}
 
-		free(data);
+		stbi_image_free(data);
 
 	}
 
@@ -101,25 +102,31 @@ void Texture::load(const std::string& _path)
 
 void Texture::load(const std::vector<std::string>& _facePaths)
 {
+	
+
 	for (int i = 0; i < _facePaths.size(); i++)
 	{
 
 		//All the faces are the same size so storing the size of one face is enough
-		unsigned char* data = stbi_load(_facePaths[i].c_str(), &m_Size.x, &m_Size.y, NULL, 4);
+		unsigned char* data = stbi_load(_facePaths[i].c_str(), &m_Size.x, &m_Size.y, &m_Channels, 0);
+		std::cout << m_Size.x << " " << m_Size.y << std::endl;
+		
 		if (!data)
 		{
 			throw std::runtime_error("Couldn't load the image: " + _facePaths[i]);
 
 		}
 
-		for (int j = 0; j < m_Size.x * m_Size.y * 4; j++)
+		for (int j = 0; j < m_Size.x * m_Size.y * m_Channels; j++)
 		{
 			m_Data.push_back(data[j]);
 		}
 
-		free(data);
+		stbi_image_free(data);
 
 	}
+
+	std::cout << m_Data.size() << std::endl;
 	
 	m_Dirty = true;
 	m_Id = 0;
@@ -184,6 +191,7 @@ GLuint Texture::id()
 	return m_Id;
 }
 
+//This uses jpgs so no alpha channel
 GLuint Texture::id(int _faces)
 {
 	if (!m_Id)
@@ -197,7 +205,6 @@ GLuint Texture::id(int _faces)
 
 	}
 
-
 	if (m_Dirty)
 	{
 
@@ -207,19 +214,33 @@ GLuint Texture::id(int _faces)
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
+		
+
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 		//upload the image data to the bound texture unit in the GPU
 
+		int faceSize = m_Size.x * m_Size.y * m_Channels;
+		//std::cout << faceSize << std::endl;
+
 		for (int i = 0; i < _faces; i++)
 		{
-			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, m_Size.x, m_Size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_Data.data());
-		}
+			const void* faceData = m_Data.data() + i * faceSize;
+			//std::cout << faceData << std::endl;
 
-	
-		
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, m_Size.x, m_Size.y, 0, GL_RGB, GL_UNSIGNED_BYTE, faceData);
+
+			/*GLenum err = glGetError();
+
+			if (err != GL_NO_ERROR)
+			{
+				std::cout << "OpenGL Error: " << err << std::endl;
+			}*/
+
+			
+		}
 
 		glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 	
@@ -229,5 +250,5 @@ GLuint Texture::id(int _faces)
 
 
 
-	return GLuint();
+	return m_Id;
 }

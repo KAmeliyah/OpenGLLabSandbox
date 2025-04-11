@@ -26,7 +26,7 @@ GameWindow::GameWindow()
 		throw std::runtime_error("Failed to initialise glew");
 	}
 
-	std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
+	
 
 	m_WindowWidth = WINDOW_WIDTH;
 	m_WindowHeight = WINDOW_HEIGHT;
@@ -49,7 +49,9 @@ GameWindow::GameWindow()
 	m_Camera = std::make_shared<TrackCamera>(m_WindowWidth, m_WindowHeight);
 	m_Camera->SetEventManager(m_EventManager);
 	m_Camera->SetTarget(m_Player);
-
+	
+	m_Specular = std::make_shared<ShaderProgram>("VertexShader.v", "SpecularFragmentShader.f");
+	
 	std::vector<std::string> pathsForFaces = {
 		"assets/skybox/posx.jpg",
 		"assets/skybox/negx.jpg",
@@ -58,9 +60,7 @@ GameWindow::GameWindow()
 		"assets/skybox/posz.jpg",
 		"assets/skybox/negz.jpg" };
 
-	m_Skybox = std::make_shared<Cubemap>("assets/primitives/cube.obj", pathsForFaces);
-
-	m_Specular = std::make_shared<ShaderProgram>("VertexShader.v", "SpecularFragmentShader.f");
+	m_Skybox = std::make_shared<Cubemap>("assets/skybox/reversed_cube.obj", pathsForFaces);
 
 	m_SkyboxShader = std::make_shared<ShaderProgram>("Skybox.v", "Skybox.f");
 
@@ -120,6 +120,7 @@ void GameWindow::Draw(float _dt)
 
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
+	
 
 	m_Specular->SetUniform("u_CameraPos", m_Camera->GetPosition());
 	m_Specular->SetUniform("u_Projection", m_Camera->GetProjection());
@@ -135,19 +136,15 @@ void GameWindow::Draw(float _dt)
 
 	m_Placeholder->Draw(_dt, m_Specular);
 
-
+	
 
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
 
-	//Depth stuff is disabled so draw the skybox
 
-	//Use skybox shader
+	glDepthMask(GL_FALSE);
+	glDepthFunc(GL_LEQUAL);
 
-	//Remove translation but keep rotation
-
-	//glDepthFunc(GL_LEQUAL);
-	//
 
 	glm::mat4 view = glm::mat4(glm::mat3(m_Camera->GetView()));
 
@@ -157,8 +154,17 @@ void GameWindow::Draw(float _dt)
 
 	m_Skybox->Draw(m_SkyboxShader);
 
-	//glDepthFunc(GL_LESS);
+	glDepthFunc(GL_LESS);
+	glDepthMask(GL_TRUE);
 
+
+	//Depth stuff is disabled so draw the skybox
+
+	//Use skybox shader
+
+	//Remove translation but keep rotation
+
+	
 
 	SDL_GL_SwapWindow(m_Window);
 
