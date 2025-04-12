@@ -9,7 +9,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:/13d6d8d39853b6e2fbe26c49822d53e9.jpg
+map_Kd textures/13d6d8d39853b6e2fbe26c49822d53e9.jpg
 
 newmtl Material
 Ns 5.831403
@@ -19,7 +19,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:/concrete-2788397_1920.png
+map_Kd textures/concrete-2788397_1920.png
 
 newmtl Material.001
 Ns 250.000000
@@ -29,7 +29,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:/counter front.png
+map_Kd textures/counter front.png
 
 newmtl Material.002
 Ka 1.000000 1.000000 1.000000
@@ -38,9 +38,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:/plaster_grey_04_diff_2k.jpg
-map_Ns C:/plaster_grey_04_rough_ao_2k.jpg
-map_Bump -bm 1.000000 C:/plaster_grey_04_nor_2k.jpg
+map_Kd textures/plaster_grey_04_diff_2k.jpg
+map_Ns textures/plaster_grey_04_rough_ao_2k.jpg
+map_Bump -bm 1.000000 textures/plaster_grey_04_nor_2k.jpg
 
 newmtl Material.003
 Ns 61.519623
@@ -60,7 +60,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:/1.png
+map_Kd textures/1.png
 
 newmtl block_low
 Ka 1.000000 1.000000 1.000000
@@ -69,10 +69,10 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:/block_low_albedo.jpg
-map_Ns C:/block_low_roughness.jpg
-map_refl C:/block_low_metallic.jpg
-map_Bump -bm 4.400001 C:/block_low_normal.jpg
+map_Kd textures/block_low_albedo.jpg
+map_Ns textures/block_low_roughness.jpg
+map_refl textures/block_low_metallic.jpg
+map_Bump -bm 4.400001 textures/block_low_normal.jpg
 
 newmtl ground
 Ka 1.000000 1.000000 1.000000
@@ -81,9 +81,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:/gravel_ground_01_diff_2k.jpg
-map_Ns C:/gravel_ground_01_rough_2k.jpg
-map_Bump -bm 1.000000 C:/gravel_ground_01_nor_2k.jpg
+map_Kd textures/gravel_ground_01_diff_2k.jpg
+map_Ns textures/gravel_ground_01_rough_2k.jpg
+map_Bump -bm 1.000000 textures/gravel_ground_01_nor_2k.jpg
 
 newmtl metal_rod
 Ns 250.000000
@@ -93,7 +93,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:/rusted-metal-texture-5.jpg
+map_Kd textures/rusted-metal-texture-5.jpg
 
 newmtl petli_low
 Ka 1.000000 1.000000 1.000000
@@ -102,10 +102,10 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:/petli_low_albedo.jpg
-map_Ns C:/petli_low_roughness.jpg
-map_refl C:/petli_low_metallic.jpg
-map_Bump -bm 3.200000 C:/petli_low_normal.jpg
+map_Kd textures/petli_low_albedo.jpg
+map_Ns textures/petli_low_roughness.jpg
+map_refl textures/petli_low_metallic.jpg
+map_Bump -bm 3.200000 textures/petli_low_normal.jpg
 
 newmtl pipe
 Ns 250.000000
@@ -115,7 +115,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:/pipe.png
+map_Kd textures/pipe.png
 
 newmtl poll2
 Ns 250.000000
@@ -125,7 +125,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:/poll 2.png
+map_Kd textures/poll 2.png
 
 newmtl poll3
 Ns 250.000000
@@ -135,7 +135,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:/poll.png
+map_Kd textures/poll.png
 
 newmtl poll4
 Ns 250.000000
@@ -145,7 +145,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:/4.png
+map_Kd textures/4.png
 
 newmtl top_concrete
 Ns 250.000000
@@ -155,4 +155,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:/4.png
+map_Kd textures/4.png
