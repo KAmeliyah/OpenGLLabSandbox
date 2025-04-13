@@ -25,6 +25,8 @@ struct Collider
 	void CalculateBounds(std::vector<glm::vec3>& _vertexPositions);
 
 	bool AABBCollision(std::shared_ptr<Collider> _other);
+
+	
 	
 	//tri-box collision?
 

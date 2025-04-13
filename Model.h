@@ -17,7 +17,7 @@ struct Model
   Model& operator=(const Model& _assign);
   virtual ~Model();
 
-  std::vector<glm::vec3>& GetPositions();
+  std::vector<glm::vec3>& GetVertexPositions();
 
   GLsizei vertex_count() const;
   GLuint vao_id();
@@ -155,7 +155,7 @@ inline Model::~Model()
   }
 }
 
-inline std::vector<glm::vec3>& Model::GetPositions()
+inline std::vector<glm::vec3>& Model::GetVertexPositions()
 {
     return positions;
 }

@@ -15,10 +15,13 @@ GameObject::GameObject(const std::string& _modelPath, const std::string& _textur
 
 	m_Model = std::make_shared<Model>(_modelPath);
 	m_Texture = std::make_shared<Texture>(_texturePath);
+
+	m_MoveSpeed = 3.0f;
 	m_Position = glm::vec3(0.0f, 0.0f, -20.0f);
 	m_Rotation = glm::vec3(0.0f,0.0f,0.0f);
 
-	m_MoveSpeed = 3.0f;
+	m_Collider = std::make_shared<Collider>(m_Position, m_Model->GetVertexPositions());
+
 
 }
 
@@ -72,7 +75,7 @@ void GameObject::Update(float _dt)
 	}
 
 
-	
+	m_Collider->Update(m_Position);
 
 }
 
@@ -99,6 +102,19 @@ void GameObject::Draw(float _dt, std::shared_ptr<ShaderProgram> _shader)
 
 	glBindVertexArray(0);
 	glUseProgram(0);
+
+}
+
+void GameObject::OnCollision(std::shared_ptr<Collider> _other)
+{
+	if (m_Collider->AABBCollision(_other))
+	{
+
+		//Collision response
+		std::cout << "Colliding" << std::endl;
+	}
+
+
 
 }
 

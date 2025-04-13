@@ -8,6 +8,7 @@
 #include "Texture.h"
 #include "ShaderProgram.h"
 #include "EventHandler.h"
+#include "Collider.h"
 #include <memory>
 
 struct GameObject
@@ -26,7 +27,8 @@ struct GameObject
 
 	void Draw(float _dt, std::shared_ptr<ShaderProgram> _shader);
 
-	
+	void OnCollision(std::shared_ptr<Collider> _other);
+
 
 	void SetEventManager(std::shared_ptr<EventHandler> _eventHandler);
 
@@ -49,6 +51,8 @@ private:
 
 
 	std::shared_ptr<EventHandler> m_EventHandler{ nullptr };
+
+	std::shared_ptr<Collider> m_Collider{ nullptr };
 
 	glm::vec3 m_Position;
 
