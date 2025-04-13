@@ -17,10 +17,12 @@ struct Model
   Model& operator=(const Model& _assign);
   virtual ~Model();
 
+  std::vector<glm::vec3>& GetPositions();
+
   GLsizei vertex_count() const;
   GLuint vao_id();
 
-private:
+//Made the public to be accessible to the collider
   struct Vertex
   {
     Vertex();
@@ -37,7 +39,12 @@ private:
     Vertex c;
   };
 
+
+private:
+
   std::vector<Face> m_faces;
+
+  std::vector<glm::vec3> positions;
   GLuint m_vaoid;
   GLuint m_vboid;
   bool m_dirty;
@@ -63,7 +70,7 @@ inline Model::Model(const std::string& _path)
   , m_vaoid(0)
   , m_dirty(false)
 {
-  std::vector<glm::vec3> positions;
+  
   std::vector<glm::vec2> tcs;
   std::vector<glm::vec3> normals;
   std::string currentline;
@@ -146,6 +153,11 @@ inline Model::~Model()
   {
     glDeleteBuffers(1, &m_vboid);
   }
+}
+
+inline std::vector<glm::vec3>& Model::GetPositions()
+{
+    return positions;
 }
 
 inline Model::Model(const Model& _copy)
