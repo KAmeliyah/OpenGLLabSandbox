@@ -3,6 +3,7 @@
 #include <glm/ext.hpp>
 #include <glm/glm.hpp>
 #include "Model.h"
+#include <iostream>
 
 struct Collider
 {
@@ -29,7 +30,7 @@ struct Collider
 	
 	
 	//tri-box collision?
-
+	
 	void SetColliderWidth(float _width);
 	void SetColliderHeight(float _height);
 	void SetColliderDepth(float _depth);

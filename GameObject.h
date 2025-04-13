@@ -38,9 +38,11 @@ struct GameObject
 	//Make copy so underlying object can be modified safely
 	std::shared_ptr<Model> GetModel() const;
 	std::shared_ptr<Texture> GetTexture() const;
+	std::shared_ptr<Collider> GetCollider() const;
 
 	glm::vec3 GetPosition();
 	glm::vec3 GetRotation();
+
 
 
 private:

@@ -77,6 +77,8 @@ void GameObject::Update(float _dt)
 
 	m_Collider->Update(m_Position);
 
+
+
 }
 
 void GameObject::Draw(float _dt, std::shared_ptr<ShaderProgram> _shader)
@@ -109,9 +111,25 @@ void GameObject::OnCollision(std::shared_ptr<Collider> _other)
 {
 	if (m_Collider->AABBCollision(_other))
 	{
-
 		//Collision response
-		std::cout << "Colliding" << std::endl;
+		std::cout << "other object collision centre: " << _other->GetColliderCentre().x << " " << _other->GetColliderCentre().y << " " << _other->GetColliderCentre().z << std::endl;
+
+		
+		std::cout << "Collision at position: " << m_Position.x <<" "<< m_Position.y << " " << m_Position.z << std::endl;
+		std::cout << "minX: " << m_Collider->GetColliderCentre().x - m_Collider->GetColliderWidth()/2.0f << std::endl;
+		std::cout << "maxX: " << m_Collider->GetColliderCentre().x + m_Collider->GetColliderWidth() / 2.0f << std::endl;
+
+		std::cout << "minZ: " << m_Collider->GetColliderCentre().z - m_Collider->GetColliderDepth()/2.0f << std::endl;
+		std::cout << "maxZ: " << m_Collider->GetColliderCentre().z + m_Collider->GetColliderDepth() / 2.0f << std::endl;
+
+		std::cout << "collider width: " << m_Collider->GetColliderWidth() << std::endl;
+		std::cout << "collider depth: " << m_Collider->GetColliderDepth() << std::endl;
+
+
+		//std::cout << "Collision" << std::endl;
+
+
+
 	}
 
 
@@ -132,6 +150,11 @@ std::shared_ptr<Model> GameObject::GetModel() const
 std::shared_ptr<Texture> GameObject::GetTexture() const
 {
 	return m_Texture;
+}
+
+std::shared_ptr<Collider> GameObject::GetCollider() const
+{
+	return m_Collider;
 }
 
 glm::vec3 GameObject::GetPosition()

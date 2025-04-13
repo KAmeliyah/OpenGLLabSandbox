@@ -42,8 +42,10 @@ GameWindow::GameWindow()
 
 
 	m_Placeholder = std::make_shared<GameObject>("curuthers/curuthers.obj", "curuthers/Whiskers_diffuse.png");
-	m_Placeholder->SetPosition(glm::vec3(10, 0, -20));
-
+	glm::vec3 pos = glm::vec3(10, 0, -20);
+	m_Placeholder->SetPosition(pos);
+	
+	m_Placeholder->GetCollider()->Update(pos);
 
 	//Set up main camera
 	m_Camera = std::make_shared<TrackCamera>(m_WindowWidth, m_WindowHeight);
@@ -106,7 +108,11 @@ void GameWindow::Update(float _dt)
 	for (int i = 0; i < m_Objects.size(); i++)
 	{
 		m_Objects.at(i)->Update(_dt);
+
+		m_Objects.at(i)->OnCollision(m_Placeholder->GetCollider());
 	}
+
+	
 	
 
 }

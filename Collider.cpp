@@ -10,13 +10,13 @@ Collider::Collider(glm::vec3& _centre, std::vector<glm::vec3>& _vertexPositions)
 
 
 	//for each face - get the position of each vertex and test to see if its the furthest on any axis
-	float minX = _centre.x;
-	float minY = _centre.y;
-	float minZ = _centre.z;
+	float minX = 0;
+	float minY = 0;
+	float minZ = 0;
 
-	float maxX = _centre.x;
-	float maxY = _centre.y;
-	float maxZ = _centre.z;
+	float maxX = 0;
+	float maxY = 0;
+	float maxZ = 0;
 
 
 	for (int vertex = 0; vertex < _vertexPositions.size(); vertex++)
@@ -40,6 +40,7 @@ Collider::Collider(glm::vec3& _centre, std::vector<glm::vec3>& _vertexPositions)
 			maxY = _vertexPositions[vertex].y;
 		}
 
+		//collider depth is messed up which is causing issues for the AABB
 		if (_vertexPositions[vertex].z < minZ)
 		{
 			minZ = _vertexPositions[vertex].z;
@@ -52,6 +53,14 @@ Collider::Collider(glm::vec3& _centre, std::vector<glm::vec3>& _vertexPositions)
 
 	}
 
+	std::cout << "max x: " << maxX << std::endl;
+	std::cout << "min x: " << minX << std::endl;
+
+	std::cout << "max y: " << maxY << std::endl;
+	std::cout << "min y: " << minY << std::endl;
+
+	std::cout << "max z: " << maxZ << std::endl;
+	std::cout << "min z: " << minZ << std::endl;
 
 	m_ColliderWidth = maxX - minX;
 	m_ColliderHeight = maxY - minY;
@@ -131,6 +140,7 @@ bool Collider::AABBCollision(std::shared_ptr<Collider> _other)
 		}
 	}
 
+	//returning true when it isn't possible
 	return true; 
 
 }
