@@ -79,7 +79,6 @@ void RenderTexture::Bind()
 
 void RenderTexture::Unbind()
 {
-
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 

@@ -19,12 +19,13 @@ void main()
 	vec3 N = normalize(v_Normal);
 	vec3 lightDir = normalize(lightPos - v_FragPos);
 	vec3 viewDir = normalize(v_ViewPos - v_FragPos);
-	vec3 reflectDir = reflect(-lightDir, N);
+	//vec3 reflectDir = reflect(-lightDir, N);
 
+	vec3 halfwayDir = normalize(lightDir + viewDir);
 
 	float diff = max(dot(N,lightDir), 0.0);
 	vec3 diffuse = diffuseColor * diff;
-	float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+	float spec = pow(max(dot(viewDir, halfwayDir), 0.0), 32);
 	vec3 specular = spec * specularColor;
 
 

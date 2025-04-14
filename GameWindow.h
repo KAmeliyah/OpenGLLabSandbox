@@ -24,7 +24,7 @@ struct GameWindow
 	GameWindow();
 	~GameWindow();
 
-	//Inputs are handled frame by frame
+	
 	void Input();
 
 	void Update(float _dt);
@@ -54,8 +54,6 @@ private:
 	std::shared_ptr<TrackCamera> m_Camera;
 
 	std::shared_ptr<Cubemap> m_Skybox;
-
-
 
 	bool m_Quit{ false };
 
