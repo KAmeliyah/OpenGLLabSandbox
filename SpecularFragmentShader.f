@@ -1,12 +1,19 @@
+#version 330 core
+
+//deprecated
+//varying vec2 v_TexCoord;
+//varying vec3 v_Normal;
+//varying vec3 v_FragPos;
+//varying vec3 v_ViewPos;
+
+out vec4 FragColor;
+
+in vec2 v_TexCoord;
+in vec3 v_Normal;
+in vec3 v_FragPos;
+in vec3 v_ViewPos;
+
 uniform sampler2D u_Texture;
-
-
-varying vec2 v_TexCoord;
-varying vec3 v_Normal;
-varying vec3 v_FragPos;
-varying vec3 v_ViewPos;
-
-
                         
 void main()               
 {
@@ -32,6 +39,6 @@ void main()
 	vec3 lighting = diffuse + specular;
 
 	vec4 tex = texture2D(u_Texture, v_TexCoord);
-	gl_FragColor = vec4(lighting,1) * tex;
-	
+	FragColor = vec4(lighting,1) * tex;
+
 }
