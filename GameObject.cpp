@@ -31,14 +31,8 @@ GameObject::~GameObject()
 
 void GameObject::Update(float _dt)
 {
-
-	//calculate front and use it to move in the direction that the player is looking
-
-
-
+	
 	m_Collider->Update(m_Position);
-
-
 
 }
 
@@ -125,14 +119,29 @@ void GameObject::OnCollision(std::shared_ptr<Collider> _other)
 		}
 	}
 
-	//AABB
-
 }
 
 
 void GameObject::SetEventManager(std::shared_ptr<EventHandler> _eventHandler)
 {
 	m_EventHandler = _eventHandler;
+}
+
+void GameObject::SetTexture(const std::string& _texturePath)
+{
+	m_Texture = std::make_shared<Texture>(_texturePath);
+}
+
+void GameObject::SetTexture(std::shared_ptr<Texture> _texture)
+{
+	m_Texture = _texture;
+}
+
+void GameObject::SetModel(const std::string& _modelPath)
+{
+	m_Model = std::make_shared<Model>(_modelPath);
+	
+
 }
 
 std::shared_ptr<Model> GameObject::GetModel() const

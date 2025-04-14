@@ -39,6 +39,8 @@ void RenderTexture::Bind()
 		}
 	}
 
+	//this render buffer object stores all the data without turning it into a texture
+
 	if (!m_RboId)
 	{
 		glGenRenderbuffers(1, &m_RboId);
@@ -58,17 +60,16 @@ void RenderTexture::Bind()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		glBindTexture(GL_TEXTURE_2D, 0);
-
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_TexId, 0);
 
 		glBindRenderbuffer(GL_RENDERBUFFER, m_RboId);
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_Width, m_Height);
 		
-		glBindRenderbuffer(GL_RENDERBUFFER, 0);
-
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RboId);
 
+		//Unbind the texture and render buffer object
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glBindRenderbuffer(GL_RENDERBUFFER, 0);
 		m_Dirty = false;
 
 	}

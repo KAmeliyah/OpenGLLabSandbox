@@ -14,7 +14,6 @@
 struct GameObject
 {
 
-	//this could be made into a base class
 
 	GameObject();
 
@@ -32,6 +31,15 @@ struct GameObject
 	void SetEventManager(std::shared_ptr<EventHandler> _eventHandler);
 
 	void SetPosition(glm::vec3 _pos) { m_Position = _pos; }
+
+	void SetTexture(const std::string& _texturePath);
+
+	//If I want to give it a texture I made
+	void SetTexture(std::shared_ptr<Texture> _texture);
+
+	//Set or replace current model
+	//Include new texture or else there may be an object with no texture
+	void SetModel(const std::string& _modelPath);
 
 
 	//Make copy so underlying object can be modified safely

@@ -1,9 +1,10 @@
-#pragma once
+#ifndef _PLAYER_H_
+#define _PLAYER_H_
+
+
 #include "GameObject.h"
 struct Player : public GameObject
 {
-
-
 	Player();
 	Player(const std::string& _modelPath, const std::string& _texturePath);
 	~Player();
@@ -19,3 +20,4 @@ struct Player : public GameObject
 
 };
 
+#endif // !
