@@ -109,68 +109,63 @@ void GameObject::Draw(float _dt, std::shared_ptr<ShaderProgram> _shader)
 
 void GameObject::OnCollision(std::shared_ptr<Collider> _other)
 {
-	//Collision response
-
-	float amount = 0.1f;
-	float step = 0.1f;
-
-	//this is ugly and i can do better - but ill do it later
-	while (true)
-	{
-		if (!m_Collider->AABBCollision(_other))
-		{
-			break;
-		}
-		m_Position.x += amount;
-
-		if (!m_Collider->AABBCollision(_other))
-		{
-			break;
-		}
-		m_Position.x -= amount;
-		m_Position.x -= amount;
-
-		if (!m_Collider->AABBCollision(_other))
-		{
-			break;
-		}
-		m_Position.x += amount;
-		m_Position.z += amount;
-
-		if (!m_Collider->AABBCollision(_other))
-		{
-			break;
-		}
-		m_Position.z -= amount;
-		m_Position.z -= amount;
-
-		if (!m_Collider->AABBCollision(_other))
-		{
-			break;
-		}
-		m_Position.z += amount;
-		m_Position.y += amount;
-
-		if (!m_Collider->AABBCollision(_other))
-		{
-			break;
-		}
-		m_Position.y -= amount;
-		m_Position.y -= amount;
-
-		if (!m_Collider->AABBCollision(_other))
-		{
-			break;
-		}
-		m_Position.y += amount;
-
-		//try again with a larger step
-		amount += step;
-
-	}
-
 	
 
+
+	if (m_Collider->AABBCollision(_other))
+	{
+
+		//https://research.ncl.ac.uk/game/mastersdegree/gametechnologies/previousinformation/physics4collisiondetection/2017%20Tutorial%204%20-%20Collision%20Detection.pdf
+
+		//Collision response
+		glm::vec3 delta = m_Collider->GetColliderCentre() - _other->GetColliderCentre();
+
+		glm::vec3 overlap = glm::vec3(
+			(m_Collider->GetHalfSize().x + _other->GetHalfSize().x) - std::abs(delta.x),
+			(m_Collider->GetHalfSize().y + _other->GetHalfSize().y) - std::abs(delta.y),
+			(m_Collider->GetHalfSize().z + _other->GetHalfSize().z) - std::abs(delta.z));
+
+
+		//Using collision normals similar to the impulse method from PFG
+		if (overlap.x < overlap.y && overlap.x < overlap.z)
+		{
+			if (delta.x < 0)
+			{
+				m_Position.x -= overlap.x;
+			}
+			else
+			{
+				m_Position.x += overlap.x;
+			}
+		}
+		else if (overlap.y < overlap.x && overlap.y < overlap.z)
+		{
+			if (delta.y)
+			{
+				m_Position.y -= overlap.y;
+
+			}
+			else
+			{
+				m_Position.y += overlap.y;
+			}
+		}
+		else
+		{
+			if (delta.z < 0)
+			{
+				m_Position.z -= overlap.z;
+
+			}
+			else
+			{
+				m_Position.z += overlap.z;
+			}
+		}
+	}
+
+	//AABB
+	
 
 
 }

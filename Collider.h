@@ -14,11 +14,6 @@ struct Collider
 	Collider(glm::vec3& _centre, std::vector<glm::vec3>& _vertexPositions);
 	~Collider();
 
-	//This will be moved to the game object class once the collider is complete
-	/*void OnCollisionEnter(Collider _other);
-	void OnCollisionStay(Collider _other);
-	void OnCollisionExit(Collider _other);*/
-
 	//In case the scale of the object changes
 
 	void Update(glm::vec3& _centre);
@@ -26,6 +21,8 @@ struct Collider
 	void CalculateBounds(std::vector<glm::vec3>& _vertexPositions);
 
 	bool AABBCollision(std::shared_ptr<Collider> _other);
+
+	glm::vec3 GetCollisionNormal(std::shared_ptr<Collider> _other);
 
 	
 	
@@ -35,15 +32,18 @@ struct Collider
 	void SetColliderHeight(float _height);
 	void SetColliderDepth(float _depth);
 
-	float GetColliderWidth();
-	float GetColliderHeight();
-	float GetColliderDepth();
-	glm::vec3& GetColliderCentre();
+	float GetColliderWidth() const;
+	float GetColliderHeight() const;
+	float GetColliderDepth() const;
+	glm::vec3 GetColliderCentre() const;
+	glm::vec3 GetHalfSize();
 
 
 private:
 
-	glm::vec3 m_ColliderCentre{ 0 };
+	glm::vec3 m_ColliderCentre;
+
+	glm::vec3 m_HalfSize;
 	
 	float m_ColliderWidth{ 0 };
 	float m_ColliderHeight{ 0 };

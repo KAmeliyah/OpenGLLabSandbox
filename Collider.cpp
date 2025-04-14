@@ -53,20 +53,12 @@ Collider::Collider(glm::vec3& _centre, std::vector<glm::vec3>& _vertexPositions)
 
 	}
 
-	std::cout << "max x: " << maxX << std::endl;
-	std::cout << "min x: " << minX << std::endl;
-
-	std::cout << "max y: " << maxY << std::endl;
-	std::cout << "min y: " << minY << std::endl;
-
-	std::cout << "max z: " << maxZ << std::endl;
-	std::cout << "min z: " << minZ << std::endl;
 
 	m_ColliderWidth = maxX - minX;
 	m_ColliderHeight = maxY - minY;
 	m_ColliderDepth = maxZ - minZ;
 
-
+	m_HalfSize = glm::vec3(m_ColliderWidth / 2.0f, m_ColliderHeight / 2.0f, m_ColliderDepth / 2.0f);
 
 }
 
@@ -84,83 +76,84 @@ void Collider::Update(glm::vec3& _centre)
 bool Collider::AABBCollision(std::shared_ptr<Collider> _other)
 {
 
-	float width = m_ColliderWidth / 2.0f;
-	float height = m_ColliderHeight / 2.0f;
-	float depth = m_ColliderDepth / 2.0f;
-
 	glm::vec3 otherCentre = _other->GetColliderCentre();
-	float otherWidth = _other->GetColliderWidth() / 2.0f;
-	float otherHeight = _other->GetColliderHeight()/ 2.0f;
-	float otherDepth = _other->GetColliderDepth() / 2.0f;
-	
+	glm::vec3 otherSize = _other->GetHalfSize();
 	
 	//x
 	if (m_ColliderCentre.x > otherCentre.x)
 	{
-		if (otherCentre.x + otherWidth < m_ColliderCentre.x - width)
+		if (otherCentre.x + otherSize.x < m_ColliderCentre.x - m_HalfSize.x)
 		{
 			return false;
 		}
 	}
 	else
 	{
-		if (m_ColliderCentre.x + width < otherCentre.x - otherWidth)
+		if (m_ColliderCentre.x + m_HalfSize.x < otherCentre.x - otherSize.x)
 		{
 			return false;
 		}
 	}
 
+	//y
 	if (m_ColliderCentre.y > otherCentre.y)
 	{
-		if (otherCentre.y + otherHeight < m_ColliderCentre.y - height)
+		if (otherCentre.y + otherSize.y < m_ColliderCentre.y - m_HalfSize.y)
 		{
 			return false;
 		}
 	}
 	else
 	{
-		if (m_ColliderCentre.y + height < otherCentre.y - otherHeight)
+		if (m_ColliderCentre.y + m_HalfSize.y < otherCentre.y - otherSize.y)
 		{
 			return false;
 		}
 	}
 	
+	//z
 	if (m_ColliderCentre.z > otherCentre.z)
 	{
-		if (otherCentre.z + otherDepth < m_ColliderCentre.z - otherDepth)
+		if (otherCentre.z + otherSize.z < m_ColliderCentre.z - m_HalfSize.z)
 		{
 			return false;
 		}
 	}
 	else
 	{
-		if (m_ColliderCentre.z + depth < otherCentre.z - otherDepth)
+		if (m_ColliderCentre.z + m_HalfSize.z < otherCentre.z - otherSize.z)
 		{
 			return false;
 		}
 	}
 
-	//returning true when it isn't possible
+	
 	return true; 
 
 }
 
-float Collider::GetColliderWidth()
+
+float Collider::GetColliderWidth() const
 {
 	return m_ColliderWidth;
 }
 
-float Collider::GetColliderHeight()
+float Collider::GetColliderHeight() const
 {
 	return m_ColliderHeight;
 }
 
-float Collider::GetColliderDepth()
+float Collider::GetColliderDepth() const
 {
 	return m_ColliderDepth;
 }
 
-glm::vec3& Collider::GetColliderCentre()
+glm::vec3 Collider::GetColliderCentre() const
 {
 	return m_ColliderCentre;
+}
+
+glm::vec3 Collider::GetHalfSize()
+{
+	return m_HalfSize;
 }
