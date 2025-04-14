@@ -166,6 +166,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="FragmentShader.f" />
+    <None Include="RenderTexture.f" />
+    <None Include="RenderTexture.v" />
     <None Include="Skybox.f" />
     <None Include="Skybox.v" />
     <None Include="SpecularFragmentShader.f" />

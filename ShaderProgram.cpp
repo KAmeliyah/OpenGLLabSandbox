@@ -128,22 +128,10 @@ void ShaderProgram::SetUniform(std::string _uniform, glm::mat4 _value)
 {
 	glUseProgram(m_Id);
 
-	/*GLenum bindErr = glGetError();
-	if (bindErr != GL_NO_ERROR) {
-		std::cout << "OpenGL Error (setting view matrix uniform): " << bindErr << std::endl;
-	}*/
-
 	GLint uniformLoc = glGetUniformLocation(m_Id, _uniform.c_str());
-	//if (uniformLoc == -1) {
-	//	std::cout << "Uniform " << _uniform << " not found in shader program" << std::endl;
-	//	return;
-	//}
-
+	
 	glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(_value));
-	/*GLenum error = glGetError();
-	if (error != GL_NO_ERROR) {
-		std::cout << "OpenGL Error (after setting uniform): " << error << std::endl;
-	}*/
+	
 }
 
 void ShaderProgram::SetUniform(std::string _uniform, glm::vec4 _value)
