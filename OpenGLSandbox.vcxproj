@@ -141,6 +141,7 @@
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="IndependentCamera.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="RenderTexture.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="GameWindow.h" />
     <ClInclude Include="IndependentCamera.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="RenderTexture.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="Texture.h" />

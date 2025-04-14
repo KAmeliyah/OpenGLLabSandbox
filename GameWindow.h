@@ -8,6 +8,7 @@
 
 #include "EventHandler.h"
 #include "GameObject.h"
+#include "Player.h"
 #include "IndependentCamera.h"
 #include "TrackCamera.h"
 #include "ShaderProgram.h"
@@ -40,20 +41,17 @@ private:
 	int m_WindowWidth{ 0 };
 	int m_WindowHeight{ 0 };
 
+	std::shared_ptr<Player> m_Player;
+
 	std::shared_ptr<ShaderProgram> m_Specular;
 
 	std::shared_ptr<ShaderProgram> m_SkyboxShader;
 
-	std::vector<std::shared_ptr<GameObject>> m_Objects;
+	std::vector<std::shared_ptr<GameObject>> m_Enemies;
 
 	std::shared_ptr<EventHandler> m_EventManager;
 
 	std::shared_ptr<TrackCamera> m_Camera;
-
-	std::shared_ptr<GameObject> m_Placeholder;
-
-	//For later, when there is multiple cameras
-	std::vector<std::shared_ptr<Camera>> m_SceneCameras;
 
 	std::shared_ptr<Cubemap> m_Skybox;
 

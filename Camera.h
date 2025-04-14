@@ -13,7 +13,7 @@ struct Camera
 	~Camera();
 	
 	
-	virtual void Update(float _dt) = 0;
+	virtual void Update(float _dt);
 
 	void SetPosition(float _x, float _y, float _z);
 	void SetPosition(glm::vec3 _pos);

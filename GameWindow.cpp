@@ -35,17 +35,13 @@ GameWindow::GameWindow()
 	m_EventManager = std::make_shared<EventHandler>();
 
 	
-	
-	std::shared_ptr<GameObject> m_Player = std::make_shared<GameObject>("curuthers/curuthers.obj", "curuthers/Whiskers_diffuse.png");
+	//I'll make ground without using a model - i'll make the texture myself using a noise function to simulate gravel
+
+	m_Player = std::make_shared<Player>("curuthers/curuthers.obj", "curuthers/Whiskers_diffuse.png");
 	m_Player->SetEventManager(m_EventManager);
-	m_Objects.push_back(m_Player);
-
-
-	m_Placeholder = std::make_shared<GameObject>("curuthers/curuthers.obj", "curuthers/Whiskers_diffuse.png");
-	glm::vec3 pos = glm::vec3(10, 0, -20);
-	m_Placeholder->SetPosition(pos);
 	
-	m_Placeholder->GetCollider()->Update(pos);
+
+
 
 	//Set up main camera
 	m_Camera = std::make_shared<TrackCamera>(m_WindowWidth, m_WindowHeight);
@@ -84,15 +80,13 @@ void GameWindow::Input()
 	glViewport(0, 0, m_WindowWidth, m_WindowHeight);
 
 
-	//Keyboard Event
+	//Manages all input 
 	m_EventManager->HandleEvents();
 
 	if (m_EventManager->GetExit())
 	{
 		m_Quit = true;
 	}
-
-	//Handle movement input
 
 
 }
@@ -104,12 +98,26 @@ void GameWindow::Update(float _dt)
 	//Apply movement
 
 	m_Camera->Update(_dt);
-	
-	for (int i = 0; i < m_Objects.size(); i++)
-	{
-		m_Objects.at(i)->Update(_dt);
 
-		m_Objects.at(i)->OnCollision(m_Placeholder->GetCollider());
+	m_Player->Update(_dt);
+	
+	for (int i = 0; i < m_Enemies.size(); i++)
+	{
+		m_Player->OnCollision(m_Enemies.at(i)->GetCollider());
+
+		m_Enemies.at(i)->Update(_dt);
+		m_Enemies.at(i)->OnCollision(m_Player->GetCollider());
+		
+		//Collisions
+		for (int j = 0; j < m_Enemies.size(); j++)
+		{
+			
+			if (i != j)
+			{
+				m_Enemies.at(i)->OnCollision(m_Enemies.at(j)->GetCollider());
+			}
+		}
+		
 	}
 
 	
@@ -153,29 +161,18 @@ void GameWindow::Draw(float _dt)
 	m_Specular->SetUniform("u_View", m_Camera->GetView());
 	
 
+	m_Player->Draw(_dt, m_Specular);
 
-
-	for (int i = 0; i < m_Objects.size(); i++)
+	for (int i = 0; i < m_Enemies.size(); i++)
 	{
-		m_Objects.at(i)->Draw(_dt,m_Specular);
+		m_Enemies.at(i)->Draw(_dt,m_Specular);
 	}
-
-	m_Placeholder->Draw(_dt, m_Specular);
 
 
 
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
 
-
-
-
-
-	//Depth stuff is disabled so draw the skybox
-
-	//Use skybox shader
-
-	//Remove translation but keep rotation
 
 	
 

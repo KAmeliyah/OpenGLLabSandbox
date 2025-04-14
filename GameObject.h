@@ -23,12 +23,11 @@ struct GameObject
 	~GameObject();
 
 
-	void Update(float _dt);
+	virtual void Update(float _dt);
 
-	void Draw(float _dt, std::shared_ptr<ShaderProgram> _shader);
+	virtual void Draw(float _dt, std::shared_ptr<ShaderProgram> _shader);
 
 	void OnCollision(std::shared_ptr<Collider> _other);
-
 
 	void SetEventManager(std::shared_ptr<EventHandler> _eventHandler);
 
@@ -45,12 +44,11 @@ struct GameObject
 
 
 
-private:
+protected:
 
 	std::shared_ptr<Model> m_Model{ nullptr };
 
 	std::shared_ptr<Texture> m_Texture{ nullptr };
-
 
 	std::shared_ptr<EventHandler> m_EventHandler{ nullptr };
 

@@ -5,7 +5,7 @@ struct IndependentCamera: Camera
 
 	IndependentCamera(int _windowWidth, int _windowHeight);
 	
-	void Update(float _dt);
+	void Update(float _dt) override;
 
 
 private:

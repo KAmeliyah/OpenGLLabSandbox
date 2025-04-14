@@ -51,6 +51,12 @@ glm::vec3 Camera::GetPosition() const
 }
 
 
+void Camera::Update(float _dt)
+{
+	//view matrix
+	m_View = glm::lookAt(m_Position, m_Position + m_CameraDirection, m_CameraUp);
+}
+
 void Camera::SetPosition(float _x, float _y, float _z)
 {
 	m_Position = glm::vec3(_x, _y, _z);

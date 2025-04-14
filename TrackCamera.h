@@ -10,7 +10,7 @@ struct TrackCamera: Camera
 	TrackCamera(int _windowWidth, int _windowHeight);
 	~TrackCamera();
 
-	void Update(float _dt);
+	void Update(float _dt) override;
 
 	void SetTarget(std::shared_ptr<GameObject> _targetObject);
 
