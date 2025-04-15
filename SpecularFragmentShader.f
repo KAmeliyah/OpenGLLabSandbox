@@ -35,7 +35,6 @@ void main()
 	float spec = pow(max(dot(viewDir, halfwayDir), 0.0), 32);
 	vec3 specular = spec * specularColor;
 
-
 	vec3 lighting = diffuse + specular;
 
 	vec4 tex = texture2D(u_Texture, v_TexCoord);

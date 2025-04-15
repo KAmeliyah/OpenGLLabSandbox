@@ -1,7 +1,9 @@
 #include "Player.h"
 
-Player::Player()
+Player::Player(): GameObject()
 {
+
+
 }
 
 Player::Player(const std::string& _modelPath, const std::string& _texturePath): GameObject(_modelPath, _texturePath)

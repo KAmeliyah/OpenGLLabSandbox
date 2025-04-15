@@ -2,7 +2,7 @@
 
 GameObject::GameObject()
 {
-	m_Position = glm::vec3(0.0f, 0.0f, -20.0f);
+	m_Position = glm::vec3(0.0f, 0.0f, 0.0f);
 	m_Rotation = glm::vec3(0);
 	
 
@@ -17,7 +17,7 @@ GameObject::GameObject(const std::string& _modelPath, const std::string& _textur
 	m_Texture = std::make_shared<Texture>(_texturePath);
 
 	m_MoveSpeed = 3.0f;
-	m_Position = glm::vec3(0.0f, 0.0f, -20.0f);
+	m_Position = glm::vec3(0.0f, 0.0f, -0.0f);
 	m_Rotation = glm::vec3(0.0f,0.0f,0.0f);
 
 	m_Collider = std::make_shared<Collider>(m_Position, m_Model->GetVertexPositions());
@@ -43,7 +43,6 @@ void GameObject::Draw(float _dt, std::shared_ptr<ShaderProgram> _shader)
 	glBindVertexArray(m_Model->vao_id());
 	glBindTexture(GL_TEXTURE_2D, m_Texture->id());
 
-	
 
 	glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), m_Position);
 
@@ -125,6 +124,11 @@ void GameObject::OnCollision(std::shared_ptr<Collider> _other)
 void GameObject::SetEventManager(std::shared_ptr<EventHandler> _eventHandler)
 {
 	m_EventHandler = _eventHandler;
+}
+
+void GameObject::SetPosition(glm::vec3 _pos)
+{
+	m_Position = _pos;
 }
 
 void GameObject::SetTexture(const std::string& _texturePath)

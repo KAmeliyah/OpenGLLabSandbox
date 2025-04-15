@@ -41,8 +41,6 @@ GameWindow::GameWindow()
 	m_Player->SetEventManager(m_EventManager);
 	
 
-
-
 	//Set up main camera
 	m_Camera = std::make_shared<TrackCamera>(m_WindowWidth, m_WindowHeight);
 	m_Camera->SetEventManager(m_EventManager);
@@ -61,6 +59,12 @@ GameWindow::GameWindow()
 	m_Skybox = std::make_shared<Cubemap>("assets/skybox/reversed_cube.obj", pathsForFaces);
 
 	m_SkyboxShader = std::make_shared<ShaderProgram>("Skybox.v", "Skybox.f");
+
+
+
+	m_Powerup = std::make_shared<Pickup>("assets/primitives/cube.obj");
+
+	m_PowerLight = std::make_shared<ShaderProgram>("Pickup.v", "Pickup.f");
 
 }
 
@@ -120,6 +124,8 @@ void GameWindow::Update(float _dt)
 		
 	}
 
+	m_Player->OnCollision(m_Powerup->GetCollider());
+
 	
 }
 
@@ -138,24 +144,32 @@ void GameWindow::Draw(float _dt)
 
 	//These call glUseProgram(skyboxshader)
 	m_SkyboxShader->SetUniform("u_View", view);
-
-
 	m_SkyboxShader->SetUniform("u_Projection", m_Camera->GetProjection());
 
 	m_Skybox->Draw(m_SkyboxShader);
 
+	
+
 	glDepthFunc(GL_LESS);
 	glDepthMask(GL_TRUE);
 
+
+
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
+
+
+
+	m_PowerLight->SetUniform("u_Projection", m_Camera->GetProjection());
+	m_PowerLight->SetUniform("u_View", m_Camera->GetView());
+	m_PowerLight->SetUniform("u_LightColor", m_Powerup->GetColor());
+	m_Powerup->Draw(_dt, m_PowerLight);
 
 	
 	m_Specular->SetUniform("u_CameraPos", m_Camera->GetPosition());
 	m_Specular->SetUniform("u_Projection", m_Camera->GetProjection());
 	m_Specular->SetUniform("u_View", m_Camera->GetView());
 	
-
 	m_Player->Draw(_dt, m_Specular);
 
 	for (int i = 0; i < m_Enemies.size(); i++)

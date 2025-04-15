@@ -138,7 +138,7 @@ void ShaderProgram::SetUniform(std::string _uniform, glm::vec4 _value)
 {
 	glUseProgram(m_Id);
 	GLint uniformLoc = glGetUniformLocation(m_Id, _uniform.c_str());
-	glUniform4fv(uniformLoc, 4, glm::value_ptr(_value));
+	glUniform4fv(uniformLoc, 1, glm::value_ptr(_value));
 
 }
 
@@ -146,7 +146,7 @@ void ShaderProgram::SetUniform(std::string _uniform, glm::vec3 _value)
 {
 	glUseProgram(m_Id);
 	GLint uniformLoc = glGetUniformLocation(m_Id, _uniform.c_str());
-	glUniform3fv(uniformLoc, 3, glm::value_ptr(_value));
+	glUniform3fv(uniformLoc, 1, glm::value_ptr(_value));
 }
 
 void ShaderProgram::SetUniform(std::string _uniform, float _value)

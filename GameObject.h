@@ -30,7 +30,7 @@ struct GameObject
 
 	void SetEventManager(std::shared_ptr<EventHandler> _eventHandler);
 
-	void SetPosition(glm::vec3 _pos) { m_Position = _pos; }
+	void SetPosition(glm::vec3 _pos);
 
 	void SetTexture(const std::string& _texturePath);
 
@@ -67,11 +67,7 @@ protected:
 	//Use to find the forward direction
 	glm::vec3 m_Rotation;
 
-
-	float m_LastMouseX;
-	float m_LastMouseY;
 	float m_MoveSpeed;
-
 
 };
 

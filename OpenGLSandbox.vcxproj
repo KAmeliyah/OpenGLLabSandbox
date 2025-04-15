@@ -142,6 +142,7 @@
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="IndependentCamera.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Pickup.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="RenderTexture.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="GameWindow.h" />
     <ClInclude Include="IndependentCamera.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="Pickup.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RenderTexture.h" />
     <ClInclude Include="ShaderProgram.h" />
@@ -165,7 +167,11 @@
     <ClInclude Include="TrackCamera.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Bloom.f" />
+    <None Include="Bloom.v" />
     <None Include="FragmentShader.f" />
+    <None Include="Pickup.f" />
+    <None Include="Pickup.v" />
     <None Include="RenderTexture.f" />
     <None Include="RenderTexture.v" />
     <None Include="Skybox.f" />

@@ -8,7 +8,7 @@
 struct Collider
 {
 	//Everyone gets a collider
-
+	//a collider type struct will be helpful in figuring out the correct response
 
 	//Calculate height width and depth of the current object 
 	Collider(glm::vec3& _centre, std::vector<glm::vec3>& _vertexPositions);
