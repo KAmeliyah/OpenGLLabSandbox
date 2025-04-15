@@ -167,9 +167,9 @@
     <ClInclude Include="TrackCamera.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Bloom.f" />
-    <None Include="Bloom.v" />
     <None Include="FragmentShader.f" />
+    <None Include="ObjectFS.f" />
+    <None Include="ObjectVS.v" />
     <None Include="Pickup.f" />
     <None Include="Pickup.v" />
     <None Include="RenderTexture.f" />

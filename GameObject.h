@@ -26,7 +26,7 @@ struct GameObject
 
 	virtual void Draw(float _dt, std::shared_ptr<ShaderProgram> _shader);
 
-	void OnCollision(std::shared_ptr<Collider> _other);
+	
 
 	void SetEventManager(std::shared_ptr<EventHandler> _eventHandler);
 

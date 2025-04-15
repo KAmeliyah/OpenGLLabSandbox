@@ -142,16 +142,16 @@
     <None Include="RenderTexture.f">
       <Filter>Source Files\Resource Files</Filter>
     </None>
-    <None Include="Bloom.f">
-      <Filter>Source Files\Resource Files</Filter>
-    </None>
-    <None Include="Bloom.v">
-      <Filter>Source Files\Resource Files</Filter>
-    </None>
     <None Include="Pickup.f">
       <Filter>Source Files\Resource Files</Filter>
     </None>
     <None Include="Pickup.v">
+      <Filter>Source Files\Resource Files</Filter>
+    </None>
+    <None Include="ObjectFS.f">
+      <Filter>Source Files\Resource Files</Filter>
+    </None>
+    <None Include="ObjectVS.v">
       <Filter>Source Files\Resource Files</Filter>
     </None>
   </ItemGroup>

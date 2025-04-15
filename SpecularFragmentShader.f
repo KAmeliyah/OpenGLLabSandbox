@@ -1,11 +1,5 @@
 #version 330 core
 
-//deprecated
-//varying vec2 v_TexCoord;
-//varying vec3 v_Normal;
-//varying vec3 v_FragPos;
-//varying vec3 v_ViewPos;
-
 out vec4 FragColor;
 
 in vec2 v_TexCoord;
@@ -26,8 +20,6 @@ void main()
 	vec3 N = normalize(v_Normal);
 	vec3 lightDir = normalize(lightPos - v_FragPos);
 	vec3 viewDir = normalize(v_ViewPos - v_FragPos);
-	//vec3 reflectDir = reflect(-lightDir, N);
-
 	vec3 halfwayDir = normalize(lightDir + viewDir);
 
 	float diff = max(dot(N,lightDir), 0.0);

@@ -133,6 +133,11 @@ bool Collider::AABBCollision(std::shared_ptr<Collider> _other)
 }
 
 
+void Collider::SetType(int _type)
+{
+	m_Type = static_cast<Type> (_type);
+}
+
 float Collider::GetColliderWidth() const
 {
 	return m_ColliderWidth;
@@ -156,4 +161,9 @@ glm::vec3 Collider::GetColliderCentre() const
 glm::vec3 Collider::GetHalfSize()
 {
 	return m_HalfSize;
+}
+
+int Collider::GetType()
+{
+	return m_Type;
 }

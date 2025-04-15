@@ -12,8 +12,6 @@ void main()
 {
 
 
-
-
 	FragColor = vec4(u_LightColor, 1.0);
 
 }

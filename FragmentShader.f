@@ -1,8 +1,5 @@
 uniform sampler2D u_Texture;
-
-//maybe swap this out for an attribute
 uniform vec3 u_LightPos;
-
 
 
 varying vec2 v_TexCoord;
