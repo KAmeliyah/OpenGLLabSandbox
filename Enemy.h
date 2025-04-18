@@ -6,6 +6,7 @@ struct Enemy : public GameObject
 {
 
 	Enemy();
+
 	Enemy(const std::string& _modelPath, const std::string& _texturePath);
 	~Enemy();
 

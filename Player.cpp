@@ -10,8 +10,10 @@ Player::Player(const std::string& _modelPath, const std::string& _texturePath): 
 {
 
 	m_MoveSpeed = 3.0f;
-	m_Position = glm::vec3(0.0f, 0.0f, -20.0f);
+	m_Position = glm::vec3(0.0f, 0.0f, 10.0f);
 	m_Rotation = glm::vec3(0.0f, 0.0f, 0.0f);
+	m_Health = 100;
+	m_Ammo = 100;
 
 
 }
@@ -149,14 +151,23 @@ void Player::OnCollision(std::shared_ptr<Collider> _other)
 
 			case 1:
 				//Enemy - Deal damage to self
+				m_Health -= 10;
 				break;
 
 			case 2:
 				//Bullet - Deal damage to self
+				m_Health -= 10;
 				break;
 
 			case 3:
 				//Health - replenish health
+				m_Health += 30;
+
+				if (m_Health > 100)
+				{
+					m_Health = 100;
+				}
+
 				break;
 
 			case 4:

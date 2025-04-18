@@ -19,6 +19,8 @@ struct Pickup : public GameObject
 
 	void Draw(float _dt, std::shared_ptr<ShaderProgram> _shader) override;
 
+	//this needs a collision to destroy if the player collides
+
 	void SetColor(glm::vec3 _color);
 
 	glm::vec3 GetColor();

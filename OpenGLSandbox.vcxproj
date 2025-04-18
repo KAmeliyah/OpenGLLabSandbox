@@ -143,6 +143,7 @@
     <ClCompile Include="IndependentCamera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pickup.cpp" />
+    <ClCompile Include="Plane.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="RenderTexture.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="IndependentCamera.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Pickup.h" />
+    <ClInclude Include="Plane.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RenderTexture.h" />
     <ClInclude Include="ShaderProgram.h" />

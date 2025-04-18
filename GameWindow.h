@@ -44,15 +44,18 @@ private:
 
 	std::shared_ptr<Player> m_Player;
 
-	std::shared_ptr<ShaderProgram> m_Specular;
+	
 
 	std::shared_ptr<ShaderProgram> m_SkyboxShader;
+
+	std::shared_ptr<ShaderProgram> m_ObjectShader;
 
 	std::vector<std::shared_ptr<GameObject>> m_Enemies;
 
 	std::shared_ptr<EventHandler> m_EventManager;
 
-	std::shared_ptr<Pickup> m_Powerup;
+
+	std::vector<std::shared_ptr<Pickup>> m_Powerups;
 	std::shared_ptr<ShaderProgram> m_PowerLight;
 
 	std::shared_ptr<TrackCamera> m_Camera;

@@ -46,7 +46,12 @@ GameWindow::GameWindow()
 	m_Camera->SetEventManager(m_EventManager);
 	m_Camera->SetTarget(m_Player);
 	
-	m_Specular = std::make_shared<ShaderProgram>("VertexShader.v", "SpecularFragmentShader.f");
+
+	//Could do a kill cam
+
+
+
+	m_ObjectShader = std::make_shared<ShaderProgram>("ObjectVS.v", "ObjectFS.f");
 	
 	std::vector<std::string> pathsForFaces = {
 		"assets/skybox/posx.jpg",
@@ -61,8 +66,8 @@ GameWindow::GameWindow()
 	m_SkyboxShader = std::make_shared<ShaderProgram>("Skybox.v", "Skybox.f");
 
 
-
-	m_Powerup = std::make_shared<Pickup>("assets/primitives/cube.obj");
+	std::shared_ptr<Pickup> m_Powerup = std::make_shared<Pickup>("assets/primitives/cube.obj");
+	m_Powerups.push_back(m_Powerup);
 
 	m_PowerLight = std::make_shared<ShaderProgram>("Pickup.v", "Pickup.f");
 
@@ -109,73 +114,74 @@ void GameWindow::Update(float _dt)
 	{
 		m_Player->OnCollision(m_Enemies.at(i)->GetCollider());
 
-		m_Enemies.at(i)->Update(_dt);
-		m_Enemies.at(i)->OnCollision(m_Player->GetCollider());
-		
-		//Collisions
-		for (int j = 0; j < m_Enemies.size(); j++)
-		{
-			
-			if (i != j)
-			{
-				m_Enemies.at(i)->OnCollision(m_Enemies.at(j)->GetCollider());
-			}
-		}
-		
+		//Enemy collide with the player
+
 	}
 
-	m_Player->OnCollision(m_Powerup->GetCollider());
 
-	
+	for (int i = 0; i < m_Powerups.size(); i++)
+	{
+		m_Player->OnCollision(m_Powerups.at(i)->GetCollider());
+	}
+
+	//put in a guard to prevent more than four powerups at one time
+	//Give them six possible locations to spawn in
 }
 
 void GameWindow::Draw(float _dt)
 {
 
+	//Render to render buffer object
+
+	//Render to regular buffer
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
+	//SkyBox
 	glDepthMask(GL_FALSE);
 	glDepthFunc(GL_LEQUAL);
 
 
 	glm::mat4 view = glm::mat4(glm::mat3(m_Camera->GetView()));
 
-	//These call glUseProgram(skyboxshader)
 	m_SkyboxShader->SetUniform("u_View", view);
 	m_SkyboxShader->SetUniform("u_Projection", m_Camera->GetProjection());
 
 	m_Skybox->Draw(m_SkyboxShader);
 
 	
-
 	glDepthFunc(GL_LESS);
 	glDepthMask(GL_TRUE);
 
 
-
+	//Enabling face culling
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 
 
-
+	//Powerups
 	m_PowerLight->SetUniform("u_Projection", m_Camera->GetProjection());
 	m_PowerLight->SetUniform("u_View", m_Camera->GetView());
-	m_PowerLight->SetUniform("u_LightColor", m_Powerup->GetColor());
-	m_Powerup->Draw(_dt, m_PowerLight);
+	m_PowerLight->SetUniform("u_LightColor", m_Powerups[0]->GetColor());
+	m_Powerups[0]->Draw(_dt, m_PowerLight);
 
 	
-	m_Specular->SetUniform("u_CameraPos", m_Camera->GetPosition());
-	m_Specular->SetUniform("u_Projection", m_Camera->GetProjection());
-	m_Specular->SetUniform("u_View", m_Camera->GetView());
+	//Other Objects
+	//Need to find a way to have a dynamic thing for point lights
+	m_ObjectShader->SetUniform("u_CameraPos", m_Camera->GetPosition());
+	m_ObjectShader->SetUniform("u_Projection", m_Camera->GetProjection());
+	m_ObjectShader->SetUniform("u_View", m_Camera->GetView());
+	m_ObjectShader->SetUniform("u_DirLight", glm::vec3(0, 20, 0));
+	m_ObjectShader->SetUniform("u_PLightPos", m_Powerups[0]->GetPosition());
+	m_ObjectShader->SetUniform("u_PLightColor", m_Powerups[0]->GetColor());
 	
-	m_Player->Draw(_dt, m_Specular);
+	m_Player->Draw(_dt, m_ObjectShader);
 
-	for (int i = 0; i < m_Enemies.size(); i++)
+	/*for (int i = 0; i < m_Enemies.size(); i++)
 	{
 		m_Enemies.at(i)->Draw(_dt,m_Specular);
-	}
+	}*/
 
 
 
